@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 /* Main Page */
-Route::get('/', function () {
-    return view('pages.homepage');
-});
+Route::get('/', [MainController::class, 'index'])->name('main');
 
 /* Static Pages */
 Route::group([], function () {
