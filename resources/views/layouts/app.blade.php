@@ -6,7 +6,7 @@
     @include('components.panels.styles')
     @include('components.panels.scripts')
     <title>Рога и Сила - @yield('title')</title>
-    <link href="assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body class="bg-white text-gray-600 font-sans leading-normal text-base tracking-normal flex min-h-screen flex-col">
 <div class="wrapper flex flex-1 flex-col">
