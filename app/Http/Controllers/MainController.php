@@ -9,7 +9,10 @@ class MainController extends Controller
 {
     public function index()
     {
-        $articles = Article::query()->latest('published_at')->limit(3)->get();
+        $articles = Article::query()
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->limit(3)->get();
 
         return view('pages.homepage', compact('articles'));
     }

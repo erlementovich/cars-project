@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,7 @@ Route::group([], function () {
     })->name('clients');
 });
 
+Route::group([], function () {
+    Route::get('/articles', [ArticleController::class, 'index'])->name('news');
+});
 
