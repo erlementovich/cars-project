@@ -37,7 +37,8 @@ Route::group([], function () {
     })->name('clients');
 });
 
-Route::group([], function () {
-    Route::get('/articles', [ArticleController::class, 'index'])->name('news');
+Route::group(['prefix' => 'articles'], function () {
+    Route::get('/', [ArticleController::class, 'index'])->name('news');
+    Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
 });
 

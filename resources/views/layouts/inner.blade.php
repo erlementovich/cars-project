@@ -8,6 +8,7 @@
             <div class="space-y-4">
                 @yield('child-content')
             </div>
+            @yield('after-content')
         </div>
     </div>
 @endsection

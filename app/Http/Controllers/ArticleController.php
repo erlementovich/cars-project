@@ -41,11 +41,10 @@ class ArticleController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Article $article
-     * @return \Illuminate\Http\Response
      */
     public function show(Article $article)
     {
-        //
+        return view('pages.article', compact('article'));
     }
 
     /**
