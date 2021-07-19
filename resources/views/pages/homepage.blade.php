@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title',  'Рога и Сила - Главная страница')
+@section('title',  'Главная страница')
 
 @section('content')
     <section class="bg-white">

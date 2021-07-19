@@ -13,6 +13,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/* Main Page */
 Route::get('/', function () {
     return view('pages.homepage');
 });
+
+/* Static Pages */
+Route::group([], function () {
+    Route::get('/about', function () {
+        return view('pages.about');
+    })->name('about');
+    Route::get('/contacts', function () {
+        return view('pages.contacts');
+    })->name('contacts');
+    Route::get('/financial-department', function () {
+        return view('pages.financial-department');
+    })->name('financial');
+    Route::get('/terms-of-sales', function () {
+        return view('pages.sales');
+    })->name('sales');
+    Route::get('/for-clients', function () {
+        return view('pages.clients');
+    })->name('clients');
+});
+
+
