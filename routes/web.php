@@ -39,6 +39,7 @@ Route::group([], function () {
 
 Route::group(['prefix' => 'articles'], function () {
     Route::get('/', [ArticleController::class, 'index'])->name('news');
+    Route::get('/create', [ArticleController::class, 'create'])->name('article-create');
     Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
 });
 
