@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -26,11 +29,24 @@ class ArticleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        //
+        $articleData = $request->only(['title', 'description', 'body']);
+
+        if ($request->has('publish')) {
+            $articleData['published_at'] = Carbon::now()->toDateTimeString();
+        }
+
+        $article = Article::create($articleData);
+
+        if ($article) {
+            session()->flash('success', 'Новость успешно добавлена в базу');
+        } else {
+            session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
+        }
+
+        return redirect()->route('article-create');
     }
 
     /**

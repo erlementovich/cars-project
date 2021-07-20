@@ -6,15 +6,15 @@ use Illuminate\View\Component;
 
 class Group extends Component
 {
-    public $label = '';
-    public $for = '';
+    public $label;
+    public $for;
 
     /**
      * Group constructor.
      * @param string $label
      * @param string $for
      */
-    public function __construct(string $label, string $for)
+    public function __construct(string $label = '', string $for = '')
     {
         $this->label = $label;
         $this->for = $for;

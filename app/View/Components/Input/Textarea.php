@@ -6,15 +6,23 @@ use Illuminate\View\Component;
 
 class Textarea extends Component
 {
+    public $id;
+    public $placeholder;
+    public $name;
+
     /**
-     * Create a new component instance.
-     *
-     * @return void
+     * Textarea constructor.
+     * @param $id
+     * @param $placeholder
+     * @param $name
      */
-    public function __construct()
+    public function __construct(string $placeholder = '', string $name = '', string $id = '')
     {
-        //
+        $this->id = $id;
+        $this->placeholder = $placeholder;
+        $this->name = $name;
     }
+
 
     /**
      * Get the view / contents that represent the component.

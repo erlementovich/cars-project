@@ -40,6 +40,8 @@ Route::group([], function () {
 Route::group(['prefix' => 'articles'], function () {
     Route::get('/', [ArticleController::class, 'index'])->name('news');
     Route::get('/create', [ArticleController::class, 'create'])->name('article-create');
+    Route::post('/store', [ArticleController::class, 'store'])->name('article-store');
+    Route::patch('/{article}', [ArticleController::class, 'update'])->name('article-update');
     Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
 });
 

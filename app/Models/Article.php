@@ -6,21 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
+
+    protected $fillable = [
+        'title',
+        'description',
+        'body',
+        'published_at',
+    ];
 
     protected $dates = [
         'published_at',
     ];
 
-    protected static function boot()
+    public function getSlugOptions(): SlugOptions
     {
-        parent::boot();
-
-        static::creating(function ($article) {
-            $article->slug = Str::slug($article->title);
-        });
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 }

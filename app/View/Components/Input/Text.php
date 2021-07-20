@@ -6,9 +6,9 @@ use Illuminate\View\Component;
 
 class Text extends Component
 {
-    public $id = '';
-    public $placeholder = '';
-    public $name= '';
+    public $id;
+    public $placeholder;
+    public $name;
 
     /**
      * Text constructor.
@@ -16,7 +16,7 @@ class Text extends Component
      * @param string $placeholder
      * @param string $name
      */
-    public function __construct(string $id, string $placeholder, string $name)
+    public function __construct(string $id = '', string $placeholder = '', string $name = '')
     {
         $this->id = $id;
         $this->placeholder = $placeholder;
