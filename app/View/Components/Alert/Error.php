@@ -1,26 +1,21 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Alert;
 
 use Illuminate\View\Component;
 
-class Alert extends Component
+class Error extends Component
 {
-    public $type;
-
     public $message;
 
     /**
-     * Alert constructor.
-     * @param $type
+     * Success constructor.
      * @param $message
      */
-    public function __construct($type, $message)
+    public function __construct(string $message = 'Сообщение')
     {
-        $this->type = $type;
         $this->message = $message;
     }
-
 
     /**
      * Get the view / contents that represent the component.
@@ -29,6 +24,6 @@ class Alert extends Component
      */
     public function render()
     {
-        return view('components.alert');
+        return view('components.alerts.error');
     }
 }

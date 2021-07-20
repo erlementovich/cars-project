@@ -4,22 +4,19 @@ namespace App\View\Components\Input;
 
 use Illuminate\View\Component;
 
-class Select extends Component
+class Date extends Component
 {
     public $id;
-    public $options;
     public $name;
 
     /**
-     * Select constructor.
-     * @param $id string
-     * @param $options array
-     * @param $name string
+     * Date constructor.
+     * @param $id
+     * @param $name
      */
-    public function __construct(string $id = '', array $options = [], string $name = '')
+    public function __construct(string $id = '', string $name = '')
     {
         $this->id = $id;
-        $this->options = $options;
         $this->name = $name;
     }
 
@@ -31,6 +28,6 @@ class Select extends Component
      */
     public function render()
     {
-        return view('components.forms.select');
+        return view('components.forms.date');
     }
 }

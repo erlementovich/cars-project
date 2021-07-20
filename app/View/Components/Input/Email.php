@@ -6,14 +6,18 @@ use Illuminate\View\Component;
 
 class Email extends Component
 {
+    public $id;
+    public $name;
+
     /**
-     * Create a new component instance.
-     *
-     * @return void
+     * Email constructor.
+     * @param $id
+     * @param $name
      */
-    public function __construct()
+    public function __construct(string $id = '', string $name = '')
     {
-        //
+        $this->id = $id;
+        $this->name = $name;
     }
 
     /**
