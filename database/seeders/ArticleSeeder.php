@@ -15,17 +15,6 @@ class ArticleSeeder extends Seeder
      */
     public function run()
     {
-
-        $count = rand(10, 50);
-        $articles = Article::factory($count)->create();
-        $faker = Factory::create();
-
-        $halfRandomArticles = $articles->random(intdiv($count, 2));
-
-        $halfRandomArticles->each(function ($article) use ($faker) {
-            $article->update([
-                'published_at' => $faker->dateTimeThisMonth()
-            ]);
-        });
+        Article::factory(rand(10, 50))->create();
     }
 }
