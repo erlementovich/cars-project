@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MainController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,8 +41,10 @@ Route::group([], function () {
 Route::group(['prefix' => 'articles'], function () {
     Route::get('/', [ArticleController::class, 'index'])->name('news');
     Route::get('/create', [ArticleController::class, 'create'])->name('article-create');
+    Route::get('/{article:slug}/edit', [ArticleController::class, 'edit'])->name('article-edit');
     Route::post('/store', [ArticleController::class, 'store'])->name('article-store');
-    Route::patch('/{article}', [ArticleController::class, 'update'])->name('article-update');
+    Route::put('/{article}', [ArticleController::class, 'update'])->name('article-update');
     Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
+    Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('article-destroy');
 });
 
