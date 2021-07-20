@@ -2,8 +2,9 @@
     <p class="text-3xl text-black font-bold mb-4">Информация</p>
     <nav>
         <ul class="list-inside  bullet-list-item">
-            @include('components.panels.static-menu.wrap',
-                   ['activeClass' => 'text-orange cursor-default', 'nonActiveClass' => 'text-gray-600 hover:text-orange'])
+            <x-panels.static-menu.wrap
+                activeClass="text-orange cursor-default"
+                nonActiveClass="text-gray-600 hover:text-orange"/>
         </ul>
     </nav>
 </div>

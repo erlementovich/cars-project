@@ -2,5 +2,5 @@
 @section('title', 'Все новости')
 
 @section('child-content')
-    @include('components.articles.wrap')
+    @include('articles.index')
 @endsection

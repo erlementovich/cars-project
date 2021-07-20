@@ -1,6 +1,6 @@
 @if($articles)
     @foreach($articles as $article)
-        @include('components.articles.card.wrap')
+        @include('articles.card.wrap')
     @endforeach
     {!! $articles->links() !!}
 @endif

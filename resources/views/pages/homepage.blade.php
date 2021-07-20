@@ -95,5 +95,5 @@
             </div>
         </div>
     </section>
-    @include('components.latest-news.wrap')
+    <x-latest-news.wrap :articles="$articles"/>
 @endsection

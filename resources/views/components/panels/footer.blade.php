@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        @include('components.panels.footer-menu')
+        <x-panels.footer-menu/>
     </section>
 
 

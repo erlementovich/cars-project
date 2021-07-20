@@ -7,7 +7,7 @@
         </div>
         <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6">
             @foreach($articles as $article)
-                @include('components.latest-news.item')
+                <x-latest-news.item :article="$article"/>
             @endforeach
         </div>
     </section>

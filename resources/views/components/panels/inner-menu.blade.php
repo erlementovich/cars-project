@@ -4,8 +4,9 @@
             <li>
                 <p class="text-xl text-black font-bold mb-4">Информация</p>
                 <ul class="space-y-2">
-                    @include('components.panels.static-menu.wrap',
-                    ['activeClass' => 'text-orange cursor-default', 'nonActiveClass' => 'hover:text-orange'])
+                    <x-panels.static-menu.wrap
+                        activeClass="text-orange cursor-default"
+                        nonActiveClass="hover:text-orange"/>
                 </ul>
             </li>
         </ul>
