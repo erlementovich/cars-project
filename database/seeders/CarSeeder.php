@@ -22,11 +22,8 @@ class CarSeeder extends Seeder
         $classes = CarClass::query()->get();
         $engines = CarEngine::query()->get();
 
-        foreach (Car::query()->get() as $car) {
-            dd($car, $car->carEngine()->first());
-        }
-
         $isNewCounter = 0;
+        $newCount = rand(0, 4);
 
         for ($i = 0; $i < $rand; ++$i) {
             $is_new = rand(0, 1) == 1;
@@ -35,12 +32,9 @@ class CarSeeder extends Seeder
                 'car_class_id' => $classes->random()->id,
                 'car_body_id' => $bodies->random()->id,
                 'car_engine_id' => $engines->random()->id,
-                'is_new' => $is_new && $isNewCounter < 4
+                'is_new' => $is_new && $isNewCounter++ < $newCount
             ]);
 
-            if ($is_new) {
-                $isNewCounter++;
-            }
         }
     }
 }
