@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\MainController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -47,4 +48,13 @@ Route::group(['prefix' => 'articles'], function () {
     Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
     Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('article-destroy');
 });
+
+Route::group(['prefix' => 'catalog'], function () {
+    Route::get('/', [CarController::class, 'index'])->name('catalog');
+});
+
+Route::group(['prefix' => 'products'], function () {
+    Route::get('/{car}', [CarController::class, 'show'])->name('product-show');
+});
+
 

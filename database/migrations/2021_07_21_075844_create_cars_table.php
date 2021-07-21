@@ -16,7 +16,7 @@ class CreateCarsTable extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('body');
+            $table->text('body');
             $table->integer('price');
             $table->integer('old_price')->nullable();
             $table->string('salon')->nullable();
@@ -24,8 +24,8 @@ class CreateCarsTable extends Migration
             $table->string('kpp')->nullable();
             $table->integer('year')->nullable();
             $table->string('color')->nullable();
-            $table->unsignedBigInteger('car_body_id');
-            $table->unsignedBigInteger('car_engine_id');
+            $table->unsignedBigInteger('car_body_id')->nullable();
+            $table->unsignedBigInteger('car_engine_id')->nullable();
             $table->boolean('is_new')->default(false);
 
             $table->foreign('car_class_id')->references('id')->on('car_classes');

@@ -15,7 +15,7 @@ class MainController extends Controller
             ->latest('published_at')
             ->limit(3)->get();
 
-        $weekProducts = Car::week()->get();
+        $weekProducts = Car::week()->limit(4)->get();
 
         return view('pages.homepage', compact('articles', 'weekProducts'));
     }

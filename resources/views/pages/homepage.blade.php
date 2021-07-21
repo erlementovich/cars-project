@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('title',  'Главная страница')
 
+@push('head-styles')
+    <link href="/assets/css/main_page_template_styles.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <section class="bg-white">
         <div data-slick-carousel>
