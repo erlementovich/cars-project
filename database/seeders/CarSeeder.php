@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Car;
+use App\Models\CarBody;
+use App\Models\CarClass;
+use App\Models\CarEngine;
 use Illuminate\Database\Seeder;
 
 class CarSeeder extends Seeder
@@ -13,6 +17,30 @@ class CarSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $rand = rand(20, 100);
+        $bodies = CarBody::query()->get();
+        $classes = CarClass::query()->get();
+        $engines = CarEngine::query()->get();
+
+        foreach (Car::query()->get() as $car) {
+            dd($car, $car->carEngine()->first());
+        }
+
+        $isNewCounter = 0;
+
+        for ($i = 0; $i < $rand; ++$i) {
+            $is_new = rand(0, 1) == 1;
+
+            Car::factory()->create([
+                'car_class_id' => $classes->random()->id,
+                'car_body_id' => $bodies->random()->id,
+                'car_engine_id' => $engines->random()->id,
+                'is_new' => $is_new && $isNewCounter < 4
+            ]);
+
+            if ($is_new) {
+                $isNewCounter++;
+            }
+        }
     }
 }

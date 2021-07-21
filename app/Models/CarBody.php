@@ -10,8 +10,8 @@ class CarBody extends Model
 {
     use HasFactory;
 
-    public function cars(): BelongsTo
+    public function cars()
     {
-        return $this->belongsTo(Car::class);
+        return $this->hasMany(Car::class);
     }
 }

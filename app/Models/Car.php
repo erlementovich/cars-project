@@ -10,18 +10,18 @@ class Car extends Model
 {
     use HasFactory;
 
-    public function carEngine(): HasOne
+    public function carEngine()
     {
-        return $this->hasOne(CarEngine::class);
+        return $this->belongsTo(CarEngine::class);
     }
 
-    public function carBody(): HasOne
+    public function carBody()
     {
-        return $this->hasOne(CarBody::class);
+        return $this->belongsTo(CarBody::class);
     }
 
-    public function carClass(): HasOne
+    public function carClass()
     {
-        return $this->hasOne(CarClass::class);
+        return $this->belongsTo(CarClass::class);
     }
 }
