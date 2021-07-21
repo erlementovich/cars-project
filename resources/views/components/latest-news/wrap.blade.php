@@ -1,3 +1,4 @@
+@props(['articles'])
 @if($articles)
     <section class="news-block-inverse px-6 py-4">
         <div>
