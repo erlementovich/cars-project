@@ -29,5 +29,8 @@ class AppServiceProvider extends ServiceProvider
             return Route::currentRouteNamed($route);
         });
 
+        Blade::directive('money', function ($amount) {
+            return "<?php echo number_format($amount, 0, '', ' ') . ' ₽'; ?>";
+        });
     }
 }
