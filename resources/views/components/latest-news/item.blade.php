@@ -15,7 +15,7 @@
                    href="{{ route('articles.show', $article) }}">{{ $article->description }}</a>
             </p>
         </div>
-        <x-tags.wrap :tags="$article->tags()->get()"/>
+        <x-tags.wrap :tags="$article->tags"/>
         <div class="flex items-center">
             <p class="text-sm text-gray-400 italic">{{ $article->published_at->format('d M Y') }}</p>
         </div>
