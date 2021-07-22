@@ -1,8 +1,8 @@
 <form method="POST"
       @isset($article)
-      action="{{ route('article-update', $article) }}
+      action="{{ route('articles.update', $article) }}
       @else
-          action="{{ route('article-store') }}
+          action="{{ route('articles.store') }}
 @endisset">
 @isset($article)
     @method('PUT')
