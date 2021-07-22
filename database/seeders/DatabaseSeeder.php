@@ -15,5 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(ArticleSeeder::class);
+        $this->call(CarBodySeeder::class);
+        $this->call(CarClassSeeder::class);
+        $this->call(CarEngineSeeder::class);
+        $this->call(CarSeeder::class);
     }
 }
