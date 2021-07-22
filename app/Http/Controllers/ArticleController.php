@@ -46,7 +46,7 @@ class ArticleController extends Controller
             session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
         }
 
-        return redirect()->route('article-create');
+        return redirect()->route('articles.create');
     }
 
     /**
@@ -79,11 +79,7 @@ class ArticleController extends Controller
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
-        if ($request->has('publish')) {
-            $articleData['published_at'] = Carbon::now()->toDateTimeString();
-        } else {
-            $articleData['published_at'] = null;
-        }
+        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
 
         if ($article->update($articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
@@ -91,7 +87,7 @@ class ArticleController extends Controller
             session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
         }
 
-        return redirect()->route('article-edit', compact('article'));
+        return redirect()->route('articles.edit', compact('article'));
     }
 
     /**
@@ -107,6 +103,6 @@ class ArticleController extends Controller
             session()->flash('error', 'Не получилось удалить новость');
         }
 
-        return redirect()->route('news');
+        return redirect()->route('articles.index');
     }
 }

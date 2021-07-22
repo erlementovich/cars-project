@@ -1,5 +1,5 @@
 @isset($article)
-    <form class="mt-4" action="{{ route('article-destroy', $article) }}" method="POST">
+    <form class="mt-4" action="{{ route('articles.destroy', $article) }}" method="POST">
         @csrf
         @method('DELETE')
         <x-forms.group>
