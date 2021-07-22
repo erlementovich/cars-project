@@ -1,7 +1,14 @@
-<input id="{{ $id ?? '' }}"
+@props([
+    'name',
+    'id' => '',
+    'placeholder' => ''
+    'fieldTitle' => null
+])
+
+<input id="{{ $id }}"
        type="text"
-       name="{{ $name ?? '' }}"
-       placeholder="{{ $placeholder ?? '' }}"
+       name="{{ $name }}"
+       placeholder="{{ $placeholder }}"
        value="{{ $fieldTitle ?? old($name) }}"
        class="mt-1 block w-full rounded-md
        @error($name) border-red-600 @enderror

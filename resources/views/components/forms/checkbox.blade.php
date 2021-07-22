@@ -1,12 +1,17 @@
+@props([
+    'name',
+    'label'
+])
+
 <div class="block">
     <div class="mt-2">
         <div>
             <label class="inline-flex items-center cursor-pointer">
                 <input type="checkbox"
-                       name="{{ $name ?? '' }}"
+                       name="{{ $name }}"
                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
                        @if($isChecked ?? old($name) !== null) checked @endif>
-                <span class="ml-2">{{ $label ?? '' }}</span>
+                <span class="ml-2">{{ $label }}</span>
             </label>
         </div>
     </div>

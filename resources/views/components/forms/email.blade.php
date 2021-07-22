@@ -1,6 +1,11 @@
-<input id="{{ $id ?? '' }}"
+@props([
+    'name',
+    'id' => '',
+])
+
+<input id="{{ $id }}"
        type="email"
-       name="{{ $name ?? '' }}"
+       name="{{ $name }}"
        placeholder="john@example.com"
        value="{{ old($name) }}"
        class="mt-1 block w-full rounded-md
