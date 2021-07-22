@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+/* Main Page */
+Route::get('/', [MainController::class, 'index'])->name('main');
+
+/* Static Pages */
+Route::group([], function () {
+    Route::get('/about', function () {
+        return view('pages.about');
+    })->name('about');
+    Route::get('/contacts', function () {
+        return view('pages.contacts');
+    })->name('contacts');
+    Route::get('/financial-department', function () {
+        return view('pages.financial-department');
+    })->name('financial');
+    Route::get('/terms-of-sales', function () {
+        return view('pages.sales');
+    })->name('sales');
+    Route::get('/for-clients', function () {
+        return view('pages.clients');
+    })->name('clients');
 });
+
+Route::group(['prefix' => 'articles'], function () {
+    Route::get('/', [ArticleController::class, 'index'])->name('news');
+    Route::get('/create', [ArticleController::class, 'create'])->name('article-create');
+    Route::post('/store', [ArticleController::class, 'store'])->name('article-store');
+    Route::patch('/{article}', [ArticleController::class, 'update'])->name('article-update');
+    Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
+});
+
