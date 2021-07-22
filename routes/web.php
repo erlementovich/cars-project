@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\PageController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -17,27 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Main Page */
-Route::get('/', [MainController::class, 'index'])->name('main');
-
 /* Static Pages */
-Route::group([], function () {
-    Route::get('/about', function () {
-        return view('pages.about');
-    })->name('about');
-    Route::get('/contacts', function () {
-        return view('pages.contacts');
-    })->name('contacts');
-    Route::get('/financial-department', function () {
-        return view('pages.financial-department');
-    })->name('financial');
-    Route::get('/terms-of-sales', function () {
-        return view('pages.sales');
-    })->name('sales');
-    Route::get('/for-clients', function () {
-        return view('pages.clients');
-    })->name('clients');
-});
+Route::get('/', [PageController::class, 'main'])->name('main');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
+Route::get('/financial-department', [PageController::class, 'financial'])->name('financial');
+Route::get('/terms-of-sales', [PageController::class, 'sales'])->name('sales');
+Route::get('/for-clients', [PageController::class, 'clients'])->name('clients');
 
 Route::resource('articles', ArticleController::class);
 
