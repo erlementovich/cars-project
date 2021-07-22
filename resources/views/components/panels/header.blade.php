@@ -3,11 +3,13 @@
         <div
             class="container mx-auto block sm:flex sm:justify-between sm:items-center py-4 px-4 sm:px-0 space-y-4 sm:space-y-0">
             <div class="flex justify-center">
-                <a href="{{ route('main') }}">
-                    <span class="inline-block sm:inline">
-                        <img src="/assets/images/logo.png" width="222" height="30" alt="">
-                    </span>
-                </a>
+                @currentRoute('main')
+                <span class="inline-block sm:inline"/>
+                @else
+                    <a href="{{ route('main') }}" class="inline-block sm:inline hover:opacity-75"/>
+                @endif
+                    <img src="/assets/images/logo.png" width="222" height="30" alt="">
+                @currentRoute('main') </span> @else </a> @endif
             </div>
             <div>
                 <ul class="flex justify-center sm:justify-end items-center space-x-8 text-sm">
