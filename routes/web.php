@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\MainController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,11 +39,12 @@ Route::group([], function () {
     })->name('clients');
 });
 
-Route::group(['prefix' => 'articles'], function () {
-    Route::get('/', [ArticleController::class, 'index'])->name('news');
-    Route::get('/create', [ArticleController::class, 'create'])->name('article-create');
-    Route::post('/store', [ArticleController::class, 'store'])->name('article-store');
-    Route::patch('/{article}', [ArticleController::class, 'update'])->name('article-update');
-    Route::get('/{article:slug}', [ArticleController::class, 'show'])->name('article-show');
+Route::resource('articles', ArticleController::class);
+
+Route::get('/catalog', [CarController::class, 'index'])->name('products.index');
+
+Route::group(['prefix' => 'products'], function () {
+    Route::get('/{car}', [CarController::class, 'show'])->name('products.show');
 });
+
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Car;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -14,6 +15,8 @@ class MainController extends Controller
             ->latest('published_at')
             ->limit(3)->get();
 
-        return view('pages.homepage', compact('articles'));
+        $weekProducts = Car::week()->limit(4)->get();
+
+        return view('pages.homepage', compact('articles', 'weekProducts'));
     }
 }
