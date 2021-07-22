@@ -4,7 +4,7 @@
         <div class="mb-8 space-y-2">
             @include('articles.card.title')
             @include('articles.card.description')
-            @include('articles.card.tags')
+            <x-tags.wrap :tags="$article->tags()->get()"/>
             @include('articles.card.date')
         </div>
     </div>

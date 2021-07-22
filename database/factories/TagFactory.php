@@ -22,7 +22,7 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->text('15'),
+            'name' => $this->faker->unique()->text('12'),
         ];
     }
 }

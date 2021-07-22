@@ -20,7 +20,7 @@ class ArticleSeeder extends Seeder
         $tags = Tag::query()->get();
 
         foreach ($articles as $article) {
-            $randomTags = $tags->random(rand(2, 10));
+            $randomTags = $tags->random(rand(2, 6));
 
             $randomTags->each(function ($tag) use ($article) {
                 $article->tags()->save($tag);
