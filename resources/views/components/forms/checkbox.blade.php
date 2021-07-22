@@ -1,6 +1,7 @@
 @props([
     'name',
-    'label'
+    'label',
+    'isChecked' => null,
 ])
 
 <div class="block">

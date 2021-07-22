@@ -1,7 +1,7 @@
 @props([
     'name',
     'id' => '',
-    'placeholder' => ''
+    'placeholder' => '',
     'fieldTitle' => null
 ])
 

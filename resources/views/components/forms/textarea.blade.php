@@ -1,7 +1,8 @@
 @props([
     'name',
     'id' => '',
-    'placeholder' => ''
+    'placeholder' => '',
+    'fieldTitle' => null,
 ])
 
 <textarea id="{{ $id }}"
