@@ -49,12 +49,10 @@ Route::group(['prefix' => 'articles'], function () {
     Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('article-destroy');
 });
 
-Route::group(['prefix' => 'catalog'], function () {
-    Route::get('/', [CarController::class, 'index'])->name('catalog');
-});
+Route::get('/catalog', [CarController::class, 'index'])->name('products.index');
 
 Route::group(['prefix' => 'products'], function () {
-    Route::get('/{car}', [CarController::class, 'show'])->name('product-show');
+    Route::get('/{car}', [CarController::class, 'show'])->name('products.show');
 });
 
 
