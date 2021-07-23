@@ -25,6 +25,13 @@
                 placeholder="Краткое описание"/>
         </x-forms.group>
 
+        <x-forms.group for="tags" label="Названия тегов (через запятую)">
+            <x-forms.text
+                :fieldTitle="isset($article) ? $article->tagsToString(): null"
+                id="tags"
+                name="tags"/>
+        </x-forms.group>
+
         <x-forms.group for="body" label="Детальное описание">
             <x-forms.textarea
                 :fieldTitle="$article->body ?? null"

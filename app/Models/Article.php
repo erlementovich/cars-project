@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Interfaces\HasTags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -9,7 +10,7 @@ use Illuminate\Support\Str;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Article extends Model
+class Article extends Model implements HasTags
 {
     use HasFactory, HasSlug;
 
@@ -39,5 +40,12 @@ class Article extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function tagsToString()
+    {
+        $tags = $this->tags->pluck('name');
+
+        return implode(', ', $tags->toArray());
     }
 }

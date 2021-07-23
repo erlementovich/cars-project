@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
+use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -30,7 +32,7 @@ class ArticleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
@@ -42,6 +44,8 @@ class ArticleController extends Controller
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
+            $tags = $tagSyncRequest->validated();
+            $tagsSynchronizer->sync($tags, $article);
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
         }
@@ -75,7 +79,7 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
@@ -83,6 +87,8 @@ class ArticleController extends Controller
 
         if ($article->update($articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
+            $tags = $tagSyncRequest->validated();
+            $tagsSynchronizer->sync($tags, $article);
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
         }
