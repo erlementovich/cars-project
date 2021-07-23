@@ -33,6 +33,4 @@ class TagsSynchronizer
             return !$oldTags->contains('id', $tag->id);
         });
     }
-
-
 }

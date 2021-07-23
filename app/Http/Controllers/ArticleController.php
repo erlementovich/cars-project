@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
@@ -12,12 +13,20 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    protected $articleRepository;
+
+    /**
+     * ArticleController constructor.
+     * @param ArticlesRepositoryContract $articleRepository
+     */
+    public function __construct(ArticlesRepositoryContract $articleRepository)
+    {
+        $this->articleRepository = $articleRepository;
+    }
+
     public function index()
     {
-        $articles = Article::query()
-            ->whereNotNull('published_at')
-            ->orderByDesc('published_at')
-            ->paginate(3);
+        $articles = $this->articleRepository->pagination(5);
         return view('pages.article.index', compact('articles'));
     }
 
@@ -40,10 +49,11 @@ class ArticleController extends Controller
             $articleData['published_at'] = Carbon::now()->toDateTimeString();
         }
 
-        $article = Article::create($articleData);
+        $article = $this->articleRepository->create($articleData);
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
+
             $tags = $tagSyncRequest->validated();
             $tagsSynchronizer->sync($tags, $article);
         } else {
@@ -85,7 +95,7 @@ class ArticleController extends Controller
 
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
 
-        if ($article->update($articleData)) {
+        if ($this->articleRepository->update($article, $articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
             $tags = $tagSyncRequest->validated();
             $tagsSynchronizer->sync($tags, $article);
@@ -103,7 +113,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        if ($article->delete()) {
+        if ($this->articleRepository->delete($article)) {
             session()->flash('success', 'Новость успешно удалена');
         } else {
             session()->flash('error', 'Не получилось удалить новость');

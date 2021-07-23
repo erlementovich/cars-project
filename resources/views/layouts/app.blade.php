@@ -9,7 +9,7 @@
     <x-panels.scripts/>
     @stack('head-scripts')
 
-    <title>Рога и Сила - @yield('title')</title>
+    <title>{{ config('app.name') }} - @yield('title')</title>
     <link href="/assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body class="bg-white text-gray-600 font-sans leading-normal text-base tracking-normal flex min-h-screen flex-col">

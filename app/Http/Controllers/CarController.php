@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Models\Car;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+    protected $carRepository;
+
     /**
-     * Display a listing of the resource.
-     *
+     * CarController constructor.
+     * @param CarsRepositoryContract $carRepository
      */
+    public function __construct(CarsRepositoryContract $carRepository)
+    {
+        $this->carRepository = $carRepository;
+    }
+
+
     public function index()
     {
-        $products = Car::query()->paginate(20);
+        $products = $this->carRepository->pagination(16);
         return view('pages.product.index', compact('products'));
     }
 
