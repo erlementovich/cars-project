@@ -5,18 +5,42 @@ namespace App\Services;
 
 
 use App\Contracts\Interfaces\HasTags;
+use App\Contracts\Interfaces\TagsRepositoryContract;
 use Illuminate\Support\Collection;
 
 class TagsSynchronizer
 {
+    protected $tagsRepository;
+
+    /**
+     * TagsSynchronizer constructor.
+     * @param TagsRepositoryContract $tagsRepository
+     */
+    public function __construct(TagsRepositoryContract $tagsRepository)
+    {
+        $this->tagsRepository = $tagsRepository;
+    }
+
+
     public function sync(Collection $tags, HasTags $model)
     {
         $oldTags = $model->tags;
+        $inputTags = $this->getInputTags($tags);
+        $unUsedTags = $this->getUnUsedTags($oldTags, $inputTags);
 
-        $model->tags()->detach($this->getUnUsedTags($oldTags, $tags));
+        $model->tags()->detach($unUsedTags);
 
-        $this->getNewTags($oldTags, $tags)->map(function ($tag) use ($model) {
+        $newTags = $this->getNewTags($oldTags, $inputTags);
+
+        $newTags->map(function ($tag) use ($model) {
             $model->tags()->save($tag);
+        });
+    }
+
+    public function getInputTags(Collection $tags)
+    {
+        return $tags->map(function ($tag) {
+            return $this->tagsRepository->firstOrCreate(['name' => $tag]);
         });
     }
 
