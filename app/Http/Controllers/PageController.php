@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Contracts\Interfaces\CarsRepositoryContract;
-use App\Models\Article;
-use App\Models\Car;
-use Illuminate\Http\Request;
 
 class PageController extends Controller
 {

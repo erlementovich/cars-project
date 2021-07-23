@@ -8,8 +8,6 @@ use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
 use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
@@ -56,6 +54,7 @@ class ArticleController extends Controller
 
             $tags = $tagSyncRequest->validated();
             $tagsSynchronizer->sync($tags, $article);
+
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
         }
