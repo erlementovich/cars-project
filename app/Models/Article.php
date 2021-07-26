@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Contracts\Interfaces\HasTags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -47,5 +45,10 @@ class Article extends Model implements HasTags
         $tags = $this->tags->pluck('name');
 
         return implode(', ', $tags->toArray());
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
     }
 }
