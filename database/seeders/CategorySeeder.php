@@ -14,8 +14,10 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::factory(10)->create()->each(function ($category) {
-            $category->children()->saveMany(Category::factory(rand(4, 10))->create());
+        Category::factory(5)->create()->each(function ($category) {
+            $category->children()->saveMany(Category::factory(rand(4, 10))->create())->each(function ($cat) {
+                $cat->children()->saveMany(Category::factory(rand(0, 3))->create());
+            });
         });
     }
 }
