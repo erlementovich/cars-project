@@ -22,7 +22,9 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->text(20),
+            'sort' => $this->faker->numberBetween(0, 100),
         ];
     }
+
 }
