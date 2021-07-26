@@ -12,15 +12,19 @@ use Illuminate\Support\Collection;
 class CategoriesRepository implements CategoriesRepositoryContract
 {
     protected $category;
+    protected $car;
 
     /**
-     * CarsRepository constructor.
+     * CategoriesRepository constructor.
      * @param Category $category
+     * @param Car $car
      */
-    public function __construct(Category $category)
+    public function __construct(Category $category, Car $car)
     {
         $this->category = $category;
+        $this->car = $car;
     }
+
 
     public function categoriesTree()
     {
@@ -36,6 +40,6 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $categories = $category->descendants()->pluck('id');
         $categories[] = $category->getKey();
 
-        return Car::whereIn('category_id', $categories)->paginate($count);
+        return $this->car->query()->whereIn('category_id', $categories)->paginate($count);
     }
 }
