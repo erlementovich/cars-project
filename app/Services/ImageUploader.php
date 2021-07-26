@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Models\Image;
 use Exception;
 use GuzzleHttp\Client;
@@ -12,14 +13,12 @@ use Illuminate\Support\Facades\Storage;
 class ImageUploader
 {
     protected $client;
+    protected $imageRepository;
 
-    /**
-     * ImageUploader constructor.
-     * @param $client
-     */
-    public function __construct(Client $client)
+    public function __construct(Client $client, ImagesRepositoryContract $imageRepository)
     {
         $this->client = $client;
+        $this->imageRepository = $imageRepository;
     }
 
     private function storagePath()
@@ -49,5 +48,13 @@ class ImageUploader
         }
 
         return '/images/' . $filename;
+    }
+
+    public function saveFile($file, $title = '')
+    {
+        $extension = $file->extension();
+        $fileName = uniqid() . "." . $extension;
+        $file->storeAs('/public/images', $fileName);
+        return $this->imageRepository->create("/images/$fileName", $title);
     }
 }

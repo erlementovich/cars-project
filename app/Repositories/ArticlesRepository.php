@@ -27,7 +27,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
         return $this->article->query()
             ->whereNotNull('published_at')
             ->orderByDesc('published_at')
-            ->with('tags')
+            ->with(['tags', 'image'])
             ->paginate(5);
     }
 
@@ -36,7 +36,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
         return $this->article->query()
             ->whereNotNull('published_at')
             ->latest('published_at')
-            ->with('tags')
+            ->with(['tags', 'image'])
             ->limit(3)->get();
     }
 

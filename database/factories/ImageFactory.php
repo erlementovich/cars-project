@@ -27,7 +27,7 @@ class ImageFactory extends Factory
     public function definition()
     {
         $imageUploader = app()->make(ImageUploader::class);
-        $url = $this->faker->imageUrl(1200, 800);
+        $url = $this->faker->imageUrl(800, 600);
         $image = $imageUploader->saveFromURL($url);
 
         return [

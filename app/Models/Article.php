@@ -17,6 +17,7 @@ class Article extends Model implements HasTags
         'description',
         'body',
         'published_at',
+        'image_id',
     ];
 
     protected $dates = [

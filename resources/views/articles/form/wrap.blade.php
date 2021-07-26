@@ -1,4 +1,5 @@
 <form method="POST"
+      enctype="multipart/form-data"
       @isset($article)
       action="{{ route('articles.update', $article) }}
       @else
@@ -45,10 +46,18 @@
             name="publish"
             label="Опубликовать"/>
 
+        <x-forms.group for="body" label="Картинка">
+            <x-forms.file
+                :image="$article->image ?? null"
+                id="image"
+                name="image"/>
+        </x-forms.group>
+
         <x-forms.group>
             <x-forms.button
                 class="bg-orange" text="Сохранить"/>
         </x-forms.group>
+
     </div>
 </div>
 </form>

@@ -20,8 +20,6 @@ class CreateCarImageTable extends Migration
             $table->primary(['car_id', 'image_id']);
             $table->foreign('car_id')->references('id')->on('cars');
             $table->foreign('image_id')->references('id')->on('images');
-
-            $table->timestamps();
         });
     }
 

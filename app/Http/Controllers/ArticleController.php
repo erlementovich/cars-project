@@ -3,23 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
+use App\Models\Image;
+use App\Services\ImageUploader;
 use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
     protected $articleRepository;
+    protected $tagsSynchronizer;
+    protected $imageUploader;
 
-    /**
-     * ArticleController constructor.
-     * @param ArticlesRepositoryContract $articleRepository
-     */
-    public function __construct(ArticlesRepositoryContract $articleRepository)
+    public function __construct(
+        ArticlesRepositoryContract $articleRepository,
+        TagsSynchronizer $tagsSynchronizer,
+        ImageUploader $imageUploader
+    )
     {
         $this->articleRepository = $articleRepository;
+        $this->tagsSynchronizer = $tagsSynchronizer;
+        $this->imageUploader = $imageUploader;
     }
 
     public function index()
@@ -39,7 +48,7 @@ class ArticleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function store(ArticleRequest $request, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
+    public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
@@ -47,13 +56,20 @@ class ArticleController extends Controller
             $articleData['published_at'] = Carbon::now()->toDateTimeString();
         }
 
+        if ($imageRequest->hasFile('image')) {
+            $file = $imageRequest->file('image');
+            $imgUploaded = $this->imageUploader->saveFile($file);
+            $articleData['image_id'] = $imgUploaded->id;
+        }
+
+
         $article = $this->articleRepository->create($articleData);
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
 
             $tags = $tagSyncRequest->validated();
-            $tagsSynchronizer->sync($tags, $article);
+            $this->tagsSynchronizer->sync($tags, $article);
 
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
@@ -88,18 +104,23 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(ArticleRequest $request, Article $article, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
+    public function update(ArticleRequest $request, Article $article, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
+
+        if ($imageRequest->hasFile('image')) {
+            $file = $imageRequest->file('image');
+            $imgUploaded = $this->imageUploader->saveFile($file);
+            $articleData['image_id'] = $imgUploaded->id;
+        }
 
         if ($this->articleRepository->update($article, $articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
             $tags = $tagSyncRequest->validated();
-            $tagsSynchronizer->sync($tags, $article);
+            $this->tagsSynchronizer->sync($tags, $article);
         } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
+            session()->flash('error', 'Что - то пошло не так, не получилось обновить новость');
         }
 
         return redirect()->route('articles.edit', compact('article'));
@@ -118,6 +139,6 @@ class ArticleController extends Controller
             session()->flash('error', 'Не получилось удалить новость');
         }
 
-        return redirect()->route('articles.index');
+        return redirect()->route('articles . index');
     }
 }
