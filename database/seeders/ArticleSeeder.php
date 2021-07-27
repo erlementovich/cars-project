@@ -17,7 +17,7 @@ class ArticleSeeder extends Seeder
     public function run()
     {
         $articles = Article::factory(rand(10, 50))->create();
-        $tags = Tag::query()->get();
+        $tags = Tag::factory(20)->create();
 
         foreach ($articles as $article) {
             $randomTags = $tags->random(rand(2, 6));

@@ -51,8 +51,7 @@ class ArticleController extends Controller
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
-
-            $tags = $tagSyncRequest->validated();
+            $tags = $tagSyncRequest->tagsCollection();
             $tagsSynchronizer->sync($tags, $article);
 
         } else {
@@ -96,7 +95,7 @@ class ArticleController extends Controller
 
         if ($this->articleRepository->update($article, $articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
-            $tags = $tagSyncRequest->validated();
+            $tags = $tagSyncRequest->tagsCollection();
             $tagsSynchronizer->sync($tags, $article);
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
