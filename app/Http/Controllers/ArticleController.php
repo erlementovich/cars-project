@@ -6,19 +6,18 @@ use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
+use App\Services\ArticlesCud;
 use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
 
 class ArticleController extends Controller
 {
     protected $articleRepository;
+    protected $articleCud;
 
-    /**
-     * ArticleController constructor.
-     * @param ArticlesRepositoryContract $articleRepository
-     */
-    public function __construct(ArticlesRepositoryContract $articleRepository)
+    public function __construct(ArticlesRepositoryContract $articleRepository, ArticlesCud $articleCud)
     {
+        $this->articleCud = $articleCud;
         $this->articleRepository = $articleRepository;
     }
 
@@ -39,24 +38,13 @@ class ArticleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function store(ArticleRequest $request, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
+    public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
-        if ($request->has('publish')) {
-            $articleData['published_at'] = Carbon::now()->toDateTimeString();
-        }
+        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
 
-        $article = $this->articleRepository->create($articleData);
-
-        if ($article) {
-            session()->flash('success', 'Новость успешно добавлена в базу');
-            $tags = $tagSyncRequest->tagsCollection();
-            $tagsSynchronizer->sync($tags, $article);
-
-        } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
-        }
+        $this->articleCud->store($articleData, $tagSyncRequest->tagsCollection());
 
         return redirect()->route('articles.create');
     }
@@ -87,19 +75,13 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(ArticleRequest $request, Article $article, TagsSynchronizer $tagsSynchronizer, TagSyncRequest $tagSyncRequest)
+    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
 
-        if ($this->articleRepository->update($article, $articleData)) {
-            session()->flash('success', 'Новость успешно обновлена');
-            $tags = $tagSyncRequest->tagsCollection();
-            $tagsSynchronizer->sync($tags, $article);
-        } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
-        }
+        $this->articleCud->update($articleData, $tagSyncRequest->tagsCollection(), $article);
 
         return redirect()->route('articles.edit', compact('article'));
     }
