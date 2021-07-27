@@ -7,20 +7,6 @@ use App\Contracts\Interfaces\CarsRepositoryContract;
 
 class PageController extends Controller
 {
-    protected $articleRepository;
-    protected $carRepository;
-
-    /**
-     * MainController constructor.
-     * @param ArticlesRepositoryContract $articleRepository
-     * @param CarsRepositoryContract $carRepository
-     */
-    public function __construct(ArticlesRepositoryContract $articleRepository, CarsRepositoryContract $carRepository)
-    {
-        $this->articleRepository = $articleRepository;
-        $this->carRepository = $carRepository;
-    }
-
     public function contacts()
     {
         return view('pages.contacts');
@@ -46,11 +32,11 @@ class PageController extends Controller
         return view('pages.clients');
     }
 
-    public function main()
+    public function main(ArticlesRepositoryContract $articleRepository, CarsRepositoryContract $carRepository)
     {
-        $articles = $this->articleRepository->latest();
+        $articles = $articleRepository->latest();
 
-        $weekProducts = $this->carRepository->week();
+        $weekProducts = $carRepository->week();
 
         return view('pages.homepage', compact('articles', 'weekProducts'));
     }

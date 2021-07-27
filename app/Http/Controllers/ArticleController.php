@@ -3,32 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
-use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
-use App\Models\Image;
-use App\Services\ImageUploader;
+use App\Services\ArticlesCud;
 use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
     protected $articleRepository;
-    protected $tagsSynchronizer;
-    protected $imageUploader;
+    protected $articleCud;
 
-    public function __construct(
-        ArticlesRepositoryContract $articleRepository,
-        TagsSynchronizer $tagsSynchronizer,
-        ImageUploader $imageUploader
-    )
+    public function __construct(ArticlesRepositoryContract $articleRepository, ArticlesCud $articleCud)
     {
+        $this->articleCud = $articleCud;
         $this->articleRepository = $articleRepository;
-        $this->tagsSynchronizer = $tagsSynchronizer;
-        $this->imageUploader = $imageUploader;
     }
 
     public function index()
@@ -52,28 +43,13 @@ class ArticleController extends Controller
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
-        if ($request->has('publish')) {
-            $articleData['published_at'] = Carbon::now()->toDateTimeString();
-        }
-
+        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         if ($imageRequest->hasFile('image')) {
             $file = $imageRequest->file('image');
             $imgUploaded = $this->imageUploader->saveFile($file);
             $articleData['image_id'] = $imgUploaded->id;
         }
-
-
-        $article = $this->articleRepository->create($articleData);
-
-        if ($article) {
-            session()->flash('success', 'Новость успешно добавлена в базу');
-
-            $tags = $tagSyncRequest->validated();
-            $this->tagsSynchronizer->sync($tags, $article);
-
-        } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
-        }
+        $this->articleCud->store($articleData, $tagSyncRequest->tagsCollection());
 
         return redirect()->route('articles.create');
     }
@@ -104,24 +80,17 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(ArticleRequest $request, Article $article, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
+    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
 
+        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         if ($imageRequest->hasFile('image')) {
             $file = $imageRequest->file('image');
             $imgUploaded = $this->imageUploader->saveFile($file);
             $articleData['image_id'] = $imgUploaded->id;
         }
-
-        if ($this->articleRepository->update($article, $articleData)) {
-            session()->flash('success', 'Новость успешно обновлена');
-            $tags = $tagSyncRequest->validated();
-            $this->tagsSynchronizer->sync($tags, $article);
-        } else {
-            session()->flash('error', 'Что - то пошло не так, не получилось обновить новость');
-        }
+        $this->articleCud->update($articleData, $tagSyncRequest->tagsCollection(), $article);
 
         return redirect()->route('articles.edit', compact('article'));
     }
@@ -139,6 +108,6 @@ class ArticleController extends Controller
             session()->flash('error', 'Не получилось удалить новость');
         }
 
-        return redirect()->route('articles . index');
+        return redirect()->route('articles.index');
     }
 }
