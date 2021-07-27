@@ -5,10 +5,7 @@ namespace App\Services;
 
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
-use App\Http\Requests\ArticleRequest;
-use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
-use Kalnoy\Nestedset\Collection;
 
 class ArticlesCud
 {
