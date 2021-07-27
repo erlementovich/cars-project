@@ -52,7 +52,7 @@ class ImageUploader
     public function saveFile($file)
     {
         $path = $file->store('images', ['disk' => 'public']);
-        return $this->imageRepository->create("/$path");
+        return $this->imageRepository->create(['url' => "/$path"]);
     }
 
     public function seedImages(array $paths)
