@@ -39,9 +39,4 @@ class TagSyncRequest extends FormRequest
         return trim($tagName);
     }
 
-    public function validated()
-    {
-        return $this->tagsCollection();
-    }
-
 }
