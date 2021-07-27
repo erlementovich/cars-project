@@ -19,9 +19,10 @@ class BannerSeeder extends Seeder
     {
         $imageUploader = app()->make(ImageUploader::class);
         $imagePaths = $imageUploader->seedImages(['banners']);
-        $images = $imageUploader->factoryImages($imagePaths)->toArray();
-        Banner::factory(3)->create()->each(function ($banner, $key) use ($images) {
-            $banner->update(['image_id' => $images[$key]['id']]);
+        $images = $imageUploader->factoryImages($imagePaths);
+
+        $images->each(function ($image) {
+            Banner::factory()->create(['image_id' => $image->id]);
         });
     }
 }

@@ -28,7 +28,7 @@
 
         <x-forms.group for="tags" label="Названия тегов (через запятую)">
             <x-forms.text
-                :fieldTitle="isset($article) ? $article->tagsToString(): null"
+                :fieldTitle="tags_to_string($article->tags ?? null)"
                 id="tags"
                 name="tags"/>
         </x-forms.group>

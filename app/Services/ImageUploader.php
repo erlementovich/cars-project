@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Models\Image;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -50,15 +49,10 @@ class ImageUploader
         return '/images/' . $filename;
     }
 
-    public function saveFile($file, $title = '')
+    public function saveFile($file)
     {
-        $extension = $file->extension();
-        $fileName = uniqid() . "." . $extension;
-        $file->storeAs('/public/images', $fileName);
-        $data = [];
-        $data['url'] = "/images/$fileName";
-        $data['alt'] = $title ?? null;
-        return $this->imageRepository->create($data);
+        $path = $file->store('images', ['disk' => 'public']);
+        return $this->imageRepository->create(['url' => "/$path"]);
     }
 
     public function seedImages(array $paths)
