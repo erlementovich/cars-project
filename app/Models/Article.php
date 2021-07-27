@@ -41,11 +41,4 @@ class Article extends Model implements HasTags
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
-
-    public function tagsToString()
-    {
-        $tags = $this->tags->pluck('name');
-
-        return implode(', ', $tags->toArray());
-    }
 }

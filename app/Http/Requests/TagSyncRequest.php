@@ -16,7 +16,7 @@ class TagSyncRequest extends FormRequest
         return ['tags' => ''];
     }
 
-    public function validated()
+    public function tagsCollection()
     {
         $tagsString = $this->validator->validated()['tags'];
         $tagsArr = collect(explode(',', trim($tagsString)));
