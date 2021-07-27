@@ -12,6 +12,7 @@ class CategoryFactory extends Factory
      *
      * @var string
      */
+    private static $incNumber = 1;
     protected $model = Category::class;
 
     /**
@@ -22,9 +23,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->text(20),
-            'sort' => $this->faker->numberBetween(0, 100),
+            'name' => $this->faker->text(15),
+            'sort' => self::$incNumber++,
         ];
     }
-
 }
