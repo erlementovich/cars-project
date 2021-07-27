@@ -20,12 +20,9 @@ class ImagesRepository implements ImagesRepositoryContract
         $this->image = $image;
     }
 
-    public function create(string $url, string $alt)
+    public function create(array $data)
     {
-        $this->image->url = $url;
-        $this->image->alt = $alt;
-        $this->image->save();
-        return $this->image;
+        return $this->image->query()->create($data);
     }
 
 }

@@ -9,12 +9,22 @@ class Image extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'url',
+        'alt'
+    ];
+
     public function articles()
     {
         return $this->hasMany(Article::class);
     }
 
     public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+
+    public function banners()
     {
         return $this->hasMany(Car::class);
     }

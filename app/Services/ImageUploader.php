@@ -55,6 +55,9 @@ class ImageUploader
         $extension = $file->extension();
         $fileName = uniqid() . "." . $extension;
         $file->storeAs('/public/images', $fileName);
-        return $this->imageRepository->create("/images/$fileName", $title);
+        $data = [];
+        $data['url'] = "/images/$fileName";
+        $data['alt'] = $title ?? null;
+        return $this->imageRepository->create($data);
     }
 }
