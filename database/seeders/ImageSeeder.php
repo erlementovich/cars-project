@@ -16,10 +16,7 @@ class ImageSeeder extends Seeder
     public function run()
     {
         $imageUploader = app()->make(ImageUploader::class);
-        $imagePaths = $imageUploader->seedImages(['banners', 'cars']);
-
-        foreach ($imagePaths as $imagePath) {
-            Image::factory()->create(['url' => $imagePath]);
-        }
+        $imagePaths = $imageUploader->seedImages(['cars']);
+        $imageUploader->factoryImages($imagePaths);
     }
 }

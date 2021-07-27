@@ -80,4 +80,14 @@ class ImageUploader
 
         return $responsePaths;
     }
+
+    public function factoryImages(array $imagePaths)
+    {
+        $images = collect();
+        foreach ($imagePaths as $imagePath) {
+            $images->push(Image::factory()->create(['url' => $imagePath]));
+        }
+
+        return $images;
+    }
 }

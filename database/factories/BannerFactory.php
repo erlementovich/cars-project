@@ -24,8 +24,8 @@ class BannerFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->text(25),
-            'description' => $this->faker->text(50),
+            'title' => $this->faker->realText(40),
+            'description' => $this->faker->realTextBetween(100, 150),
             'link' => $this->faker->url(),
         ];
     }

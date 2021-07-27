@@ -27,7 +27,7 @@ class CarFactory extends Factory
     {
         $price = $this->faker->numberBetween(1000000, 10000000);
         return [
-            'name' => $this->faker->text(30),
+            'name' => $this->faker->realText(30),
             'body' => $this->faker->realText(1000),
             'price' => $price,
             'old_price' => intval($price * rand(11, 20) / 10),

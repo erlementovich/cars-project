@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Banner;
 use App\Models\Image;
+use App\Services\ImageUploader;
 use Illuminate\Database\Seeder;
 use League\CommonMark\Inline\Element\Strong;
 
@@ -16,10 +17,11 @@ class BannerSeeder extends Seeder
      */
     public function run()
     {
-        $images = Image::query()->get();
-
-        Banner::factory(5)->create()->each(function ($banner) use ($images) {
-            $banner->update(['image_id' => $images->random()->id]);
+        $imageUploader = app()->make(ImageUploader::class);
+        $imagePaths = $imageUploader->seedImages(['banners']);
+        $images = $imageUploader->factoryImages($imagePaths)->toArray();
+        Banner::factory(3)->create()->each(function ($banner, $key) use ($images) {
+            $banner->update(['image_id' => $images[$key]['id']]);
         });
     }
 }

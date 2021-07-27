@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Contracts\Interfaces\BannersRepositoryContract;
 use App\Contracts\Interfaces\CarsRepositoryContract;
 
 class PageController extends Controller
 {
     protected $articleRepository;
     protected $carRepository;
+    protected $bannerRepository;
 
-    /**
-     * MainController constructor.
-     * @param ArticlesRepositoryContract $articleRepository
-     * @param CarsRepositoryContract $carRepository
-     */
-    public function __construct(ArticlesRepositoryContract $articleRepository, CarsRepositoryContract $carRepository)
+    public function __construct(ArticlesRepositoryContract $articleRepository, CarsRepositoryContract $carRepository, BannersRepositoryContract $bannerRepository)
     {
+        $this->bannerRepository = $bannerRepository;
         $this->articleRepository = $articleRepository;
         $this->carRepository = $carRepository;
     }
@@ -52,7 +50,9 @@ class PageController extends Controller
 
         $weekProducts = $this->carRepository->week();
 
-        return view('pages.homepage', compact('articles', 'weekProducts'));
+        $banners = $this->bannerRepository->mainBanners();
+
+        return view('pages.homepage', compact('articles', 'weekProducts', 'banners'));
     }
 
 }

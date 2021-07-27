@@ -28,6 +28,6 @@ class BannersRepository implements BannersRepositoryContract
 
     public function mainBanners()
     {
-        return $this->banner->query()->inRandomOrder()->limit(3)->get();
+        return $this->banner->query()->inRandomOrder()->limit(3)->with('image')->get();
     }
 }
