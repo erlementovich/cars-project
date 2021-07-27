@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Banner;
+use App\Services\ImageUploader;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 class BannerFactory extends Factory
 {
@@ -22,7 +24,9 @@ class BannerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->text(25),
+            'description' => $this->faker->text(50),
+            'link' => $this->faker->url(),
         ];
     }
 }

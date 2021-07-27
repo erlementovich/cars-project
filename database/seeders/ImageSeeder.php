@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Image;
+use App\Services\ImageUploader;
 use Illuminate\Database\Seeder;
 
 class ImageSeeder extends Seeder
@@ -14,6 +15,11 @@ class ImageSeeder extends Seeder
      */
     public function run()
     {
-        Image::factory(10)->create();
+        $imageUploader = app()->make(ImageUploader::class);
+        $imagePaths = $imageUploader->seedImages(['banners', 'cars']);
+
+        foreach ($imagePaths as $imagePath) {
+            Image::factory()->create(['url' => $imagePath]);
+        }
     }
 }

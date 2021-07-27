@@ -60,4 +60,24 @@ class ImageUploader
         $data['alt'] = $title ?? null;
         return $this->imageRepository->create($data);
     }
+
+    public function seedImages(array $paths)
+    {
+        $responsePaths = [];
+        foreach ($paths as $folder) {
+            $uploadDir = 'public/images/' . $folder;
+            Storage::deleteDirectory($uploadDir);
+            Storage::makeDirectory($uploadDir);
+            $files = Storage::disk('resource')->files($folder);
+
+            foreach ($files as $file) {
+                $moved = Storage::put('public/images/' . $file, Storage::disk('resource')->get($file));
+                if ($moved) {
+                    $responsePaths[] = '/images/' . $file;
+                }
+            }
+        }
+
+        return $responsePaths;
+    }
 }
