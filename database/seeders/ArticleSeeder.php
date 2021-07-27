@@ -17,12 +17,10 @@ class ArticleSeeder extends Seeder
      */
     public function run()
     {
-        $articles = Article::factory(rand(10, 50))->create();
+        $articles = Article::factory(rand(10, 20))->create();
         $tags = Tag::factory(20)->create();
-        $images = Image::query()->get();
 
         foreach ($articles as $article) {
-            $article->update(['image_id' => $images->random()->id]);
             $randomTags = $tags->random(rand(2, 6));
 
             $randomTags->each(function ($tag) use ($article) {

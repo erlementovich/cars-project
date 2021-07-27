@@ -50,11 +50,9 @@ class ImageUploader
         return '/images/' . $filename;
     }
 
-    public function saveFile($file, $title = '')
+    public function saveFile($file)
     {
-        $extension = $file->extension();
-        $fileName = uniqid() . "." . $extension;
-        $file->storeAs('/public/images', $fileName);
-        return $this->imageRepository->create("/images/$fileName", $title);
+        $path = $file->store('images', ['disk' => 'public']);
+        return $this->imageRepository->create("/$path");
     }
 }

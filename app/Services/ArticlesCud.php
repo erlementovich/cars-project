@@ -11,15 +11,20 @@ class ArticlesCud
 {
     protected $articleRepository;
     protected $tagsSynchronizer;
+    protected $imageUploader;
 
-    public function __construct(ArticlesRepositoryContract $articleRepository, TagsSynchronizer $tagsSynchronizer)
+    public function __construct(ArticlesRepositoryContract $articleRepository, TagsSynchronizer $tagsSynchronizer, ImageUploader $imageUploader)
     {
+        $this->imageUploader = $imageUploader;
         $this->articleRepository = $articleRepository;
         $this->tagsSynchronizer = $tagsSynchronizer;
     }
 
-    public function update(array $articleData, $tagsCollection, Article $article)
+    public function update(array $articleData, $tagsCollection, Article $article, $file)
     {
+        $image = $this->imageUploader->saveFile($file);
+        $articleData['image_id'] = $image->id;
+
         if ($this->articleRepository->update($article, $articleData)) {
             session()->flash('success', 'Новость успешно обновлена');
             $this->tagsSynchronizer->sync($tagsCollection, $article);
@@ -28,8 +33,11 @@ class ArticlesCud
         }
     }
 
-    public function store(array $articleData, $tagsCollection)
+    public function store(array $articleData, $tagsCollection, $file = null)
     {
+        $image = $this->imageUploader->saveFile($file);
+        $articleData['image_id'] = $image->id;
+
         $article = $this->articleRepository->create($articleData);
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');

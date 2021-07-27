@@ -27,6 +27,7 @@ class ArticleFactory extends Factory
             'description' => $this->faker->text(125),
             'body' => $this->faker->text(1000),
             'published_at' => $this->faker->optional(0.5)->dateTimeThisMonth(),
+            'image_id' => Image::factory(),
         ];
     }
 }

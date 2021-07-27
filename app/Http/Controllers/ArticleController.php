@@ -8,7 +8,6 @@ use App\Http\Requests\ImageRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
 use App\Services\ArticlesCud;
-use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
 
 class ArticleController extends Controller
@@ -39,17 +38,13 @@ class ArticleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
+    public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
-        if ($imageRequest->hasFile('image')) {
-            $file = $imageRequest->file('image');
-            $imgUploaded = $this->imageUploader->saveFile($file);
-            $articleData['image_id'] = $imgUploaded->id;
-        }
-        $this->articleCud->store($articleData, $tagSyncRequest->tagsCollection());
+        $file = $request->file('image');
+        $this->articleCud->store($articleData, $tagSyncRequest->tagsCollection(), $file);
 
         return redirect()->route('articles.create');
     }
@@ -80,17 +75,14 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest, ImageRequest $imageRequest)
+    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
 
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
-        if ($imageRequest->hasFile('image')) {
-            $file = $imageRequest->file('image');
-            $imgUploaded = $this->imageUploader->saveFile($file);
-            $articleData['image_id'] = $imgUploaded->id;
-        }
-        $this->articleCud->update($articleData, $tagSyncRequest->tagsCollection(), $article);
+        $file = $request->file('image');
+
+        $this->articleCud->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
 
         return redirect()->route('articles.edit', compact('article'));
     }
