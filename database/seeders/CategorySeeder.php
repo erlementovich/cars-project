@@ -18,9 +18,7 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Легковые',
                 'children' => [
-                    [
-                        'name' => 'Хэтчбеки',
-                    ],
+                    ['name' => 'Хэтчбеки',],
                     ['name' => 'Универсалы'],
                     ['name' => 'Купе'],
                     ['name' => 'Родстеры']
