@@ -57,17 +57,15 @@ class ImageUploader
         return $this->imageRepository->create(['path' => $path]);
     }
 
-    public function seedImages(array $paths)
+    public function seedImages($dirName)
     {
-        $responsePaths = [];
-        foreach ($paths as $folder) {
-            $files = Storage::disk('resource')->files($folder);
 
-            foreach ($files as $file) {
-                $moved = Storage::disk('public')->put('images/' . $file, Storage::disk('resource')->get($file));
-                if ($moved) {
-                    $responsePaths[] = 'images/' . $file;
-                }
+        $files = Storage::disk('resource')->files($dirName);
+
+        foreach ($files as $file) {
+            $moved = Storage::disk('public')->put('images/' . $file, Storage::disk('resource')->get($file));
+            if ($moved) {
+                $responsePaths[] = 'images/' . $file;
             }
         }
 
