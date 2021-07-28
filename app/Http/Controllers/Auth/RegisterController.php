@@ -44,7 +44,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -53,13 +53,13 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        ], $this->messages());
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\Models\User
      */
     protected function create(array $data)
@@ -69,5 +69,17 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => 'Поле обязательно для заполнения',
+            'email' => 'Введите поле в формате email@example.com',
+            'min' => 'Минимальное количество симолов :min',
+            'max' => 'Минимальное количество симолов :max',
+            'email.unique' => 'Пользователель с таким email уже существует',
+            'confirmed' => 'Пароли не совпадают'
+        ];
     }
 }
