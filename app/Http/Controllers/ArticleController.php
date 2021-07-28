@@ -6,8 +6,7 @@ use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
-use App\Services\ArticlesCud;
-use App\Services\TagsSynchronizer;
+use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
 
 class ArticleController extends Controller
@@ -41,7 +40,6 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         $file = $request->file('image');
 
@@ -85,7 +83,6 @@ class ArticleController extends Controller
     public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         $file = $request->file('image');
 
