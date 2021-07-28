@@ -4,7 +4,7 @@
     'image' => null,
 ])
 @if($image)
-    <img width="80" height="80" src="{{ asset($image->path) }}" alt="{{ $image->alt }}">
+    <img width="80" height="80" src="{{ $image->getUrl() }}" alt="{{ $image->alt }}">
 @endif
 <input id="{{ $id }}"
        type="file"
