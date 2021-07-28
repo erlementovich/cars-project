@@ -6,6 +6,8 @@ use App\Models\Car;
 use App\Models\CarBody;
 use App\Models\CarClass;
 use App\Models\CarEngine;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 
 class CarSeeder extends Seeder
@@ -21,6 +23,7 @@ class CarSeeder extends Seeder
         $bodies = CarBody::query()->get();
         $classes = CarClass::query()->get();
         $engines = CarEngine::query()->get();
+        $categories = Category::query()->get();
 
         $isNewCounter = 0;
         $newCount = rand(0, 4);
@@ -32,9 +35,9 @@ class CarSeeder extends Seeder
                 'car_class_id' => $classes->random()->id,
                 'car_body_id' => $bodies->random()->id,
                 'car_engine_id' => $engines->random()->id,
-                'is_new' => $is_new && $isNewCounter++ < $newCount
+                'category_id' => $categories->random()->id,
+                'is_new' => $is_new && $isNewCounter++ < $newCount,
             ]);
-
         }
     }
 }

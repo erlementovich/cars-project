@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PageController;
 use App\Models\User;
@@ -28,7 +29,10 @@ Route::get('/for-clients', [PageController::class, 'clients'])->name('clients');
 
 Route::resource('articles', ArticleController::class);
 
-Route::get('/catalog', [CarController::class, 'index'])->name('products.index');
+Route::group(['prefix' => 'catalog'], function () {
+    Route::get('/', [CarController::class, 'index'])->name('products.index');
+    Route::get('/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+});
 
 Route::group(['prefix' => 'products'], function () {
     Route::get('/{car}', [CarController::class, 'show'])->name('products.show');
