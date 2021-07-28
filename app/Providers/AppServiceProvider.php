@@ -37,10 +37,5 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('money', function ($amount) {
             return "<?php echo number_format($amount, 0, '', ' ') . ' ₽'; ?>";
         });
-
-        Blade::directive('tags', function ($tags) {
-            $tagsName = $tags->pluck('name')->implode(',');
-            return "<?php echo $tagsName ?>";
-        });
     }
 }
