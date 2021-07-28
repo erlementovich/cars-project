@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Models\Image;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -36,9 +37,7 @@ class ImageUploader
         $fileInfo = pathinfo(basename($url));
         $extension = $fileInfo['extension'] ?? 'jpg';
         $filename = uniqid() . '.' . $extension;
-
         $request = $this->client->get($url, [
-            'sink' => $this->storagePath() . $filename,
             'verify' => false
         ]);
 
@@ -46,29 +45,27 @@ class ImageUploader
             return $url;
         }
 
-        return '/images/' . $filename;
+        $filePath = 'images/' . $filename;
+
+        Storage::disk('public')->put($filePath, $request->getBody()->getContents());
+        return $filePath;
     }
 
     public function saveFile($file)
     {
         $path = $file->store('images', ['disk' => 'public']);
-        return $this->imageRepository->create(['url' => "/$path"]);
+        return $this->imageRepository->create(['path' => $path]);
     }
 
-    public function seedImages(array $paths)
+    public function seedImages($dirName)
     {
-        $responsePaths = [];
-        foreach ($paths as $folder) {
-            $uploadDir = 'public/images/' . $folder;
-            Storage::deleteDirectory($uploadDir);
-            Storage::makeDirectory($uploadDir);
-            $files = Storage::disk('resource')->files($folder);
 
-            foreach ($files as $file) {
-                $moved = Storage::put('public/images/' . $file, Storage::disk('resource')->get($file));
-                if ($moved) {
-                    $responsePaths[] = '/images/' . $file;
-                }
+        $files = Storage::disk('resource')->files($dirName);
+
+        foreach ($files as $file) {
+            $moved = Storage::disk('public')->put('images/' . $file, Storage::disk('resource')->get($file));
+            if ($moved) {
+                $responsePaths[] = 'images/' . $file;
             }
         }
 
@@ -79,7 +76,7 @@ class ImageUploader
     {
         $images = collect();
         foreach ($imagePaths as $imagePath) {
-            $images->push(Image::factory()->create(['url' => $imagePath]));
+            $images->push(Image::factory()->create(['path' => $imagePath]));
         }
 
         return $images;

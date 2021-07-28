@@ -1,3 +1,7 @@
+@php
+    $tagsToString = isset($article) ? $article->tags->pluck('name')->implode(', ') : null;
+@endphp
+
 <form method="POST"
       enctype="multipart/form-data"
       @isset($article)
@@ -28,7 +32,7 @@
 
         <x-forms.group for="tags" label="Названия тегов (через запятую)">
             <x-forms.text
-                :fieldTitle="tags_to_string($article->tags ?? null)"
+                :fieldTitle="$tagsToString"
                 id="tags"
                 name="tags"/>
         </x-forms.group>
