@@ -4,21 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
-use App\Http\Requests\ImageRequest;
 use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
 use App\Services\ArticlesCud;
+use App\Services\TagsSynchronizer;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
     protected $articleRepository;
-    protected $articleCud;
+    protected $articlesCreateUpdate;
 
-    public function __construct(ArticlesRepositoryContract $articleRepository, ArticlesCud $articleCud)
+    public function __construct(ArticlesRepositoryContract $articleRepository, ArticlesCreateUpdate $articlesCreateUpdate)
     {
-        $this->articleCud = $articleCud;
+        $this->articlesCreateUpdate = $articlesCreateUpdate;
         $this->articleRepository = $articleRepository;
     }
 
@@ -45,7 +44,14 @@ class ArticleController extends Controller
 
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         $file = $request->file('image');
-        $this->articleCud->store($articleData, $tagSyncRequest->tagsCollection(), $file);
+
+        $article = $this->articlesCreateUpdate->store($articleData, $tagSyncRequest->tagsCollection(), $file);
+
+        if ($article) {
+            session()->flash('success', 'Новость успешно добавлена в базу');
+        } else {
+            session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
+        }
 
         return redirect()->route('articles.create');
     }
@@ -83,7 +89,13 @@ class ArticleController extends Controller
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         $file = $request->file('image');
 
-        $this->articleCud->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
+        $updated = $this->articlesCreateUpdate->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
+
+        if ($updated) {
+            session()->flash('success', 'Новость успешно обновлена');
+        } else {
+            session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
+        }
 
         return redirect()->route('articles.edit', compact('article'));
     }
