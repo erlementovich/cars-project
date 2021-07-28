@@ -9,6 +9,7 @@ use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
 use App\Services\ArticlesCud;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {

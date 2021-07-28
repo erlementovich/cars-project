@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Services\ImageUploader;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,10 +27,12 @@ class ImageFactory extends Factory
      */
     public function definition()
     {
-        $imageUploader = app()->make(ImageUploader::class);
+        $imageUploader = App::make(ImageUploader::class);
         $url = $this->faker->imageUrl(800, 600);
+        $path = $imageUploader->saveFromURL($url);
+
         return [
-            'url' => $imageUploader->saveFromURL($url),
+            'path' => $path,
             'alt' => $this->faker->text(200),
         ];
     }
