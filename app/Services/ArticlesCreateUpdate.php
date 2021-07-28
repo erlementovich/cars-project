@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Models\Article;
 
-class ArticlesCud
+class ArticlesCreateUpdate
 {
     protected $articleRepository;
     protected $tagsSynchronizer;
@@ -20,22 +18,19 @@ class ArticlesCud
 
     public function update(array $articleData, $tagsCollection, Article $article)
     {
-        if ($this->articleRepository->update($article, $articleData)) {
-            session()->flash('success', 'Новость успешно обновлена');
+        $updated = $this->articleRepository->update($article, $articleData);
+        if ($updated)
             $this->tagsSynchronizer->sync($tagsCollection, $article);
-        } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
-        }
+
+        return $updated;
     }
 
     public function store(array $articleData, $tagsCollection)
     {
         $article = $this->articleRepository->create($articleData);
-        if ($article) {
-            session()->flash('success', 'Новость успешно добавлена в базу');
+        if ($article)
             $this->tagsSynchronizer->sync($tagsCollection, $article);
-        } else {
-            session()->flash('error', 'Что-то пошло не так, не получилось создать новость');
-        }
+
+        return $article;
     }
 }
