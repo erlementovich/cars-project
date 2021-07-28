@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
-use Ramsey\Collection\Collection;
 
 class TagSyncRequest extends FormRequest
 {
@@ -21,22 +19,14 @@ class TagSyncRequest extends FormRequest
     public function tagsCollection()
     {
         $tagsString = $this->validator->validated()['tags'];
-        $tags = collect();
+        $tagsArr = collect(explode(',', trim($tagsString)));
+        $tags = $tagsArr->filter(function ($tag) {
+            return trim($tag);
+        });
 
-        if ($tagsString) {
-            $tagsArr = explode(',', trim($tagsString));
-            foreach ($tagsArr as $tagName) {
-                $tagName = trim($tagName) ?? null;
-                if ($tagName)
-                    $tags->push(Tag::query()->firstOrCreate(['name' => $this->tagTrim($tagName)]));
-            }
-        }
-        return $tags->unique();
-    }
-
-    public function tagTrim($tagName)
-    {
-        return trim($tagName);
+        return $tags->transform(function ($tag) {
+            return trim($tag);
+        })->unique();
     }
 
 }

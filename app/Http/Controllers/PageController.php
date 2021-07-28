@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
-use App\Models\Car;
-use Illuminate\Http\Request;
+use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Contracts\Interfaces\CarsRepositoryContract;
 
 class PageController extends Controller
 {
@@ -33,14 +32,11 @@ class PageController extends Controller
         return view('pages.clients');
     }
 
-    public function main()
+    public function main(ArticlesRepositoryContract $articleRepository, CarsRepositoryContract $carRepository)
     {
-        $articles = Article::query()
-            ->whereNotNull('published_at')
-            ->latest('published_at')
-            ->limit(3)->get();
+        $articles = $articleRepository->latest();
 
-        $weekProducts = Car::week()->limit(4)->get();
+        $weekProducts = $carRepository->week();
 
         return view('pages.homepage', compact('articles', 'weekProducts'));
     }
