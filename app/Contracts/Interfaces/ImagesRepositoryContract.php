@@ -6,5 +6,5 @@ namespace App\Contracts\Interfaces;
 
 interface ImagesRepositoryContract
 {
-    public function create(string $url, string $alt = null);
+    public function create(string $path, string $alt = null);
 }
