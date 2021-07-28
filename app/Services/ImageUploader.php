@@ -21,17 +21,6 @@ class ImageUploader
         $this->imageRepository = $imageRepository;
     }
 
-    private function storagePath()
-    {
-        $path = Storage::path('public/images/');
-
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-
-        return $path;
-    }
-
     public function saveFromURL(string $url)
     {
         $fileInfo = pathinfo(basename($url));
