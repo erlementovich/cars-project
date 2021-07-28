@@ -1,3 +1,7 @@
+@php
+    $tagsToString = isset($article) ? $article->tags->pluck('name')->implode(', ') : null;
+@endphp
+
 <form method="POST"
       @isset($article)
       action="{{ route('articles.update', $article) }}
@@ -23,6 +27,13 @@
                 id="description"
                 name="description"
                 placeholder="Краткое описание"/>
+        </x-forms.group>
+
+        <x-forms.group for="tags" label="Названия тегов (через запятую)">
+            <x-forms.text
+                :fieldTitle="$tagsToString"
+                id="tags"
+                name="tags"/>
         </x-forms.group>
 
         <x-forms.group for="body" label="Детальное описание">
