@@ -14,9 +14,48 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::factory(2)->create()->each(function ($category) {
-            $category->children()->saveMany(Category::factory(4)->create());
-        });
-        Category::factory(3)->create();
+        $categories = [
+            [
+                'name' => 'Легковые',
+                'children' => [
+                    [
+                        'name' => 'Хэтчбеки',
+                    ],
+                    ['name' => 'Универсалы'],
+                    ['name' => 'Купе'],
+                    ['name' => 'Родстеры']
+                ]
+            ],
+            [
+                'name' => 'Внедорожники',
+                'children' => [
+                    ['name' => 'Рамные'],
+                    ['name' => 'Пикапы'],
+                    ['name' => 'Кроссоверы'],
+                ]
+            ],
+            ['name' => 'Раритетные'],
+            ['name' => 'Распродажа'],
+            ['name' => 'Новинки']
+        ];
+
+        foreach ($categories as $category) {
+            if (!isset($category['name']))
+                continue;
+
+            $createdCat = Category::factory()->create(['name' => $category['name']]);
+
+            if (!isset($category['children']))
+                continue;
+
+            $childrenArr = $category['children'];
+            $childCategories = collect();
+
+            foreach ($childrenArr as $child) {
+                $childCategories->push(Category::factory()->create($child));
+            }
+
+            $createdCat->children()->saveMany($childCategories);
+        }
     }
 }
