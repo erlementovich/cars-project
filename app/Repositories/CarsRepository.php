@@ -32,5 +32,4 @@ class CarsRepository implements CarsRepositoryContract
             ->where('is_new', true)
             ->limit(4)->get();
     }
-
 }

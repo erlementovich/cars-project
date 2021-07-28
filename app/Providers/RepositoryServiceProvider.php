@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Contracts\Interfaces\CategoriesRepositoryContract;
+use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Contracts\Interfaces\TagsRepositoryContract;
 use App\Repositories\ArticlesRepository;
 use App\Repositories\CarsRepository;
 use App\Repositories\CategoriesRepository;
+use App\Repositories\ImagesRepository;
 use App\Repositories\TagsRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -40,6 +42,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CategoriesRepositoryContract::class,
             CategoriesRepository::class
+        );
+
+        $this->app->bind(
+            ImagesRepositoryContract::class,
+            ImagesRepository::class
         );
     }
 

@@ -40,10 +40,10 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
+        $file = $request->file('image');
 
-        $article = $this->articlesCreateUpdate->store($articleData, $tagSyncRequest->tagsCollection());
+        $article = $this->articlesCreateUpdate->store($articleData, $tagSyncRequest->tagsCollection(), $file);
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
@@ -83,10 +83,10 @@ class ArticleController extends Controller
     public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
+        $file = $request->file('image');
 
-        $updated = $this->articlesCreateUpdate->update($articleData, $tagSyncRequest->tagsCollection(), $article);
+        $updated = $this->articlesCreateUpdate->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
 
         if ($updated) {
             session()->flash('success', 'Новость успешно обновлена');
