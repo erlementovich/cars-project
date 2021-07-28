@@ -21,6 +21,17 @@ class ImageUploader
         $this->imageRepository = $imageRepository;
     }
 
+    private function storagePath()
+    {
+        $path = Storage::path('public/images/');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        return $path;
+    }
+
     public function saveFromURL(string $url)
     {
         $fileInfo = pathinfo(basename($url));
@@ -43,6 +54,31 @@ class ImageUploader
     public function saveFile($file)
     {
         $path = $file->store('images', ['disk' => 'public']);
-        return $this->imageRepository->create($path);
+        return $this->imageRepository->create(['path' => $path]);
+    }
+
+    public function seedImages($dirName)
+    {
+
+        $files = Storage::disk('resource')->files($dirName);
+
+        foreach ($files as $file) {
+            $moved = Storage::disk('public')->put('images/' . $file, Storage::disk('resource')->get($file));
+            if ($moved) {
+                $responsePaths[] = 'images/' . $file;
+            }
+        }
+
+        return $responsePaths;
+    }
+
+    public function factoryImages(array $imagePaths)
+    {
+        $images = collect();
+        foreach ($imagePaths as $imagePath) {
+            $images->push(Image::factory()->create(['path' => $imagePath]));
+        }
+
+        return $images;
     }
 }

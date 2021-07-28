@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Contracts\Interfaces\BannersRepositoryContract;
 use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Contracts\Interfaces\CategoriesRepositoryContract;
 use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Contracts\Interfaces\TagsRepositoryContract;
 use App\Repositories\ArticlesRepository;
+use App\Repositories\BannersRepository;
 use App\Repositories\CarsRepository;
 use App\Repositories\CategoriesRepository;
 use App\Repositories\ImagesRepository;
@@ -47,6 +49,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ImagesRepositoryContract::class,
             ImagesRepository::class
+        );
+
+        $this->app->bind(
+            BannersRepositoryContract::class,
+            BannersRepository::class
         );
     }
 

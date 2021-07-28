@@ -23,13 +23,14 @@ class CarsRepository implements CarsRepositoryContract
 
     public function pagination($count = null)
     {
-        return $this->car->query()->paginate($count);
+        return $this->car->query()->with('image')->paginate($count);
     }
 
     public function week()
     {
         return $this->car->query()
             ->where('is_new', true)
+            ->with('image')
             ->limit(4)->get();
     }
 }

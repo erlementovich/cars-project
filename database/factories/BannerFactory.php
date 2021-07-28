@@ -2,18 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Article;
+use App\Models\Banner;
 use App\Models\Image;
+use App\Services\ImageUploader;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
-class ArticleFactory extends Factory
+class BannerFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Article::class;
+    protected $model = Banner::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +25,9 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->realText(30),
-            'description' => $this->faker->realTextBetween(50, 80),
-            'body' => $this->faker->realTextBetween(150, 1000),
-            'published_at' => $this->faker->optional(0.5)->dateTimeThisMonth(),
+            'title' => $this->faker->realText(40),
+            'description' => $this->faker->realTextBetween(100, 150),
+            'link' => $this->faker->url(),
             'image_id' => Image::factory(),
         ];
     }

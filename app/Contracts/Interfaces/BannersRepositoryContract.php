@@ -4,7 +4,7 @@
 namespace App\Contracts\Interfaces;
 
 
-interface ImagesRepositoryContract
+interface BannersRepositoryContract
 {
     public function create(array $data);
 }
