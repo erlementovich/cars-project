@@ -1,11 +1,13 @@
 @extends('layouts.app')
 @section('title',  'Главная страница')
 
-@push('head-styles')
+@section('breadcrumbs')
+@endsection
+@section('inner-styles')
     <link href="/assets/css/main_page_template_styles.css" rel="stylesheet">
-@endpush
+@endsection
 
-@section('content')
+@section('wrapper')
     <x-banners.wrap :banners="$banners"/>
     <x-products.week :products="$weekProducts"/>
     <x-latest-news.wrap :articles="$articles"/>
