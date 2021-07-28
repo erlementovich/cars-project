@@ -6,7 +6,6 @@
     @stack('head-styles')
     <x-panels.scripts/>
     @stack('head-scripts')
-
     @section('inner-styles')
         <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
     @show
