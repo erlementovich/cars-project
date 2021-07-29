@@ -11,4 +11,6 @@ interface CarsRepositoryContract
     public function pagination(int $count = null);
 
     public function week();
+
+    public function find(int $id);
 }

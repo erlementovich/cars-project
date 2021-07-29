@@ -24,36 +24,43 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function pagination(int $count = null)
     {
-        return $this->article->query()
+        return $this->article
             ->whereNotNull('published_at')
             ->orderByDesc('published_at')
             ->with(['tags', 'image'])
-            ->paginate(5);
+            ->paginate($count);
     }
 
     public function latest()
     {
-        return $this->article->query()
+        return $this->article
             ->whereNotNull('published_at')
             ->latest('published_at')
             ->with(['tags', 'image'])
-            ->limit(3)->get();
+            ->limit(3)
+            ->get();
     }
 
     public function create(array $data)
     {
-        return $this->article->query()->create($data);
+        return $this->article->create($data);
     }
 
-    public function update(Article $article, array $data)
+    public function update(array $data)
     {
-        return $article->update($data);
+        return $this->article->update($data);
     }
 
-    public function delete(Article $article)
+    public function delete()
     {
-        return $article->delete();
+        return $this->article->delete();
     }
+
+    public function findBySlug(string $slug)
+    {
+        return $this->article->where('slug', $slug)->first();
+    }
+
 
     public function tags()
     {

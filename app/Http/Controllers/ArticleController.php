@@ -32,11 +32,6 @@ class ArticleController extends Controller
         return view('pages.article.form');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     */
     public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
@@ -54,38 +49,25 @@ class ArticleController extends Controller
         return redirect()->route('articles.create');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Article $article
-     */
-    public function show(Article $article)
+    public function show($articleSlug)
     {
+        $article = $this->articleRepository->findBySlug($articleSlug);
         return view('pages.article.show', compact('article'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Article $article
-     */
-    public function edit(Article $article)
+    public function edit($articleSlug)
     {
+        $article = $this->articleRepository->findBySlug($articleSlug);
         return view('pages.article.form', compact('article'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Article $article
-     */
-    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
+    public function update($articleSlug, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
         $file = $request->file('image');
 
+        $article = $this->articleRepository->findBySlug($articleSlug);
         $updated = $this->articlesCreateUpdate->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
 
         if ($updated) {
@@ -97,14 +79,10 @@ class ArticleController extends Controller
         return redirect()->route('articles.edit', compact('article'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Article $article
-     */
-    public function destroy(Article $article)
+    public function destroy($articleSlug)
     {
-        if ($this->articleRepository->delete($article)) {
+        $article = $this->articleRepository->findBySlug($articleSlug);
+        if ($article->delete()) {
             session()->flash('success', 'Новость успешно удалена');
         } else {
             session()->flash('error', 'Не получилось удалить новость');

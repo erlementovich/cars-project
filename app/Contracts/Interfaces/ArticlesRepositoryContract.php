@@ -14,9 +14,11 @@ interface ArticlesRepositoryContract
 
     public function create(array $data);
 
-    public function update(Article $article, array $data);
+    public function update(array $data);
 
-    public function delete(Article $article);
+    public function delete();
+
+    public function findBySlug(string $slug);
 
     public function tags();
 }

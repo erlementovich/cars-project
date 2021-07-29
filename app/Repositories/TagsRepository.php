@@ -21,6 +21,6 @@ class TagsRepository implements TagsRepositoryContract
 
     public function firstOrCreate(array $data)
     {
-        return $this->tag->query()->firstOrCreate($data);
+        return $this->tag->firstOrCreate($data);
     }
 }
