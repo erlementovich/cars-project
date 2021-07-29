@@ -22,7 +22,7 @@ class ImagesRepository implements ImagesRepositoryContract
 
     public function create(array $data)
     {
-        return $this->image->query()->create($data);
+        return $this->image->create($data);
     }
 
 }

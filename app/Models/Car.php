@@ -25,11 +25,6 @@ class Car extends Model
         return $this->belongsTo(CarClass::class);
     }
 
-    public function scopeWeek($query)
-    {
-        return $query->where('is_new', true);
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);

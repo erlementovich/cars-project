@@ -23,11 +23,16 @@ class BannersRepository implements BannersRepositoryContract
 
     public function create(array $data)
     {
-        return $this->banner->query()->create($data);
+        return $this->banner
+            ->create($data);
     }
 
     public function mainBanners()
     {
-        return $this->banner->query()->inRandomOrder()->limit(3)->with('image')->get();
+        return $this->banner
+            ->inRandomOrder()
+            ->limit(3)
+            ->with('image')
+            ->get();
     }
 }

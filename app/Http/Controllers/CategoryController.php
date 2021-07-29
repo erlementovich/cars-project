@@ -19,8 +19,9 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function show(Category $category)
+    public function show($categorySlug)
     {
+        $category = $this->categoryRepository->findBySlug($categorySlug);
         $products = $this->categoryRepository->pagination($category, 16);
 
         return view('pages.product.index', compact('products'));

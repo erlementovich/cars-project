@@ -20,17 +20,27 @@ class CarsRepository implements CarsRepositoryContract
         $this->car = $car;
     }
 
+    public function find(int $id)
+    {
+        return $this->car
+            ->with(['carBody', 'carClass', 'carEngine'])
+            ->find($id);
+    }
+
 
     public function pagination($count = null)
     {
-        return $this->car->query()->with('image')->paginate($count);
+        return $this->car
+            ->with('image')
+            ->paginate($count);
     }
 
     public function week()
     {
-        return $this->car->query()
+        return $this->car
             ->where('is_new', true)
             ->with('image')
-            ->limit(4)->get();
+            ->limit(4)
+            ->get();
     }
 }

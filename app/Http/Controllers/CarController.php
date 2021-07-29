@@ -30,8 +30,9 @@ class CarController extends Controller
      *
      * @param \App\Models\Car $car
      */
-    public function show(Car $car)
+    public function show($id)
     {
+        $car = $this->carRepository->find($id);
         return view('pages.product.show', ['product' => $car]);
     }
 }

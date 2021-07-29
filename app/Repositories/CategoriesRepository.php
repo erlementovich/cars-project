@@ -28,11 +28,12 @@ class CategoriesRepository implements CategoriesRepositoryContract
 
     public function categoriesTree()
     {
-        return $this->category->query()
+        return $this->category
             ->orderBy('sort')
             ->withDepth()
             ->having('depth', '<', 2)
-            ->get()->toTree();
+            ->get()
+            ->toTree();
     }
 
     public function pagination(Category $category, $count = null)
@@ -40,6 +41,16 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $categories = $category->descendants()->pluck('id');
         $categories[] = $category->getKey();
 
-        return $this->car->query()->whereIn('category_id', $categories)->paginate($count);
+        return $this->car
+            ->whereIn('category_id', $categories)
+            ->paginate($count);
+    }
+
+
+    public function findBySlug(string $categorySlug)
+    {
+        return $this->category
+            ->where('slug', $categorySlug)
+            ->first();
     }
 }
