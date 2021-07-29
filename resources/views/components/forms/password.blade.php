@@ -1,11 +1,11 @@
 @props([
     'name',
     'id' => '',
-    'placeholder' => 'john@example.com'
+    'placeholder' => 'Введите пароль'
 ])
 
 <input id="{{ $id }}"
-       type="email"
+       type="password"
        name="{{ $name }}"
        placeholder="{{ $placeholder }}"
        value="{{ old($name) }}"

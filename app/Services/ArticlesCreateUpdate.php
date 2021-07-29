@@ -22,6 +22,7 @@ class ArticlesCreateUpdate
     {
         $image = $this->imageUploader->saveFile($file);
         $articleData['image_id'] = $image->id;
+
         $updated = $this->articleRepository->update($article, $articleData);
         if ($updated)
             $this->tagsSynchronizer->sync($tagsCollection, $article);
