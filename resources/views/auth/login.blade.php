@@ -27,12 +27,6 @@
                     <x-forms.button
                         class="bg-orange" text="Войти"/>
                 </x-forms.group>
-
-                @if (route('password.request'))
-                    <a class="text-orange hover:text-black" href="{{ route('password.request') }}">
-                        Забыли пароль?
-                    </a>
-                @endif
             </div>
         </div>
     </form>
