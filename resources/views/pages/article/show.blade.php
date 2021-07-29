@@ -1,9 +1,9 @@
 @extends('layouts.inner')
 @section('title', $article->title)
 
-@section('child-content')
+@section('content')
     @include('articles.show')
 @endsection
-@section('after-content')
+@section('after')
     <x-article.backward/>
 @endsection
