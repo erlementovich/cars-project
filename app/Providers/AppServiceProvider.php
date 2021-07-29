@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Kalnoy\Nestedset\Collection;
 
 class AppServiceProvider extends ServiceProvider
 {

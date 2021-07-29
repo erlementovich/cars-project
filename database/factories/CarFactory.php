@@ -6,6 +6,8 @@ use App\Models\Car;
 use App\Models\CarBody;
 use App\Models\CarClass;
 use App\Models\CarEngine;
+use App\Models\Category;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CarFactory extends Factory
@@ -26,7 +28,7 @@ class CarFactory extends Factory
     {
         $price = $this->faker->numberBetween(1000000, 10000000);
         return [
-            'name' => $this->faker->text(30),
+            'name' => $this->faker->realText(30),
             'body' => $this->faker->realText(1000),
             'price' => $price,
             'old_price' => intval($price * rand(11, 20) / 10),
@@ -37,7 +39,9 @@ class CarFactory extends Factory
             'color' => $this->faker->colorName(),
             'car_body_id' => CarBody::factory(),
             'car_engine_id' => CarEngine::factory(),
-            'is_new' => $this->faker->boolean()
+            'category_id' => Category::factory(),
+            'is_new' => $this->faker->boolean(),
+            'image_id' => Image::factory(),
         ];
     }
 }

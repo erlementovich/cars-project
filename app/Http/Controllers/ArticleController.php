@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
+use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    protected $articleRepository;
+    protected $articlesCreateUpdate;
+
+    public function __construct(ArticlesRepositoryContract $articleRepository, ArticlesCreateUpdate $articlesCreateUpdate)
+    {
+        $this->articlesCreateUpdate = $articlesCreateUpdate;
+        $this->articleRepository = $articleRepository;
+    }
+
     public function index()
     {
-        $articles = Article::query()
-            ->whereNotNull('published_at')
-            ->orderByDesc('published_at')
-            ->paginate(3);
+        $articles = $this->articleRepository->pagination(5);
         return view('pages.article.index', compact('articles'));
     }
 
@@ -30,15 +37,13 @@ class ArticleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
+        $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
+        $file = $request->file('image');
 
-        if ($request->has('publish')) {
-            $articleData['published_at'] = Carbon::now()->toDateTimeString();
-        }
-
-        $article = Article::create($articleData);
+        $article = $this->articlesCreateUpdate->store($articleData, $tagSyncRequest->tagsCollection(), $file);
 
         if ($article) {
             session()->flash('success', 'Новость успешно добавлена в базу');
@@ -75,13 +80,15 @@ class ArticleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Article $article
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(Article $article, ArticleRequest $request, TagSyncRequest $tagSyncRequest)
     {
         $articleData = $request->only(['title', 'description', 'body']);
-
         $articleData['published_at'] = $request->has('publish') ? Carbon::now()->toDateTimeString() : null;
+        $file = $request->file('image');
 
-        if ($article->update($articleData)) {
+        $updated = $this->articlesCreateUpdate->update($articleData, $tagSyncRequest->tagsCollection(), $article, $file);
+
+        if ($updated) {
             session()->flash('success', 'Новость успешно обновлена');
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
@@ -97,7 +104,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        if ($article->delete()) {
+        if ($this->articleRepository->delete($article)) {
             session()->flash('success', 'Новость успешно удалена');
         } else {
             session()->flash('error', 'Не получилось удалить новость');

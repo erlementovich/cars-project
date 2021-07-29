@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArticleFactory extends Factory
@@ -22,10 +23,11 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->text(50),
-            'description' => $this->faker->text(125),
-            'body' => $this->faker->text(1000),
+            'title' => $this->faker->realText(30),
+            'description' => $this->faker->realTextBetween(50, 80),
+            'body' => $this->faker->realTextBetween(150, 1000),
             'published_at' => $this->faker->optional(0.5)->dateTimeThisMonth(),
+            'image_id' => Image::factory(),
         ];
     }
 }

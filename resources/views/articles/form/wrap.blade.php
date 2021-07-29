@@ -1,4 +1,9 @@
+@php
+    $tagsToString = isset($article) ? $article->tags->pluck('name')->implode(', ') : null;
+@endphp
+
 <form method="POST"
+      enctype="multipart/form-data"
       @isset($article)
       action="{{ route('articles.update', $article) }}
       @else
@@ -25,6 +30,13 @@
                 placeholder="Краткое описание"/>
         </x-forms.group>
 
+        <x-forms.group for="tags" label="Названия тегов (через запятую)">
+            <x-forms.text
+                :fieldTitle="$tagsToString"
+                id="tags"
+                name="tags"/>
+        </x-forms.group>
+
         <x-forms.group for="body" label="Детальное описание">
             <x-forms.textarea
                 :fieldTitle="$article->body ?? null"
@@ -38,10 +50,18 @@
             name="publish"
             label="Опубликовать"/>
 
+        <x-forms.group for="body" label="Картинка">
+            <x-forms.file
+                :image="$article->image ?? null"
+                id="image"
+                name="image"/>
+        </x-forms.group>
+
         <x-forms.group>
             <x-forms.button
                 class="bg-orange" text="Сохранить"/>
         </x-forms.group>
+
     </div>
 </div>
 </form>

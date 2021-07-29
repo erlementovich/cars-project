@@ -29,4 +29,19 @@ class Car extends Model
     {
         return $query->where('is_new', true);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
+    public function gallery()
+    {
+        return $this->belongsToMany(Image::class);
+    }
 }

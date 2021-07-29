@@ -1,12 +1,13 @@
 @props([
     'name',
     'id' => '',
+    'placeholder' => 'john@example.com'
 ])
 
 <input id="{{ $id }}"
        type="email"
        name="{{ $name }}"
-       placeholder="john@example.com"
+       placeholder="{{ $placeholder }}"
        value="{{ old($name) }}"
        class="mt-1 block w-full rounded-md
        @error($name) border-red-600 @enderror

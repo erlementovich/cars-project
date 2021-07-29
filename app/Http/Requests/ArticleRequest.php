@@ -18,6 +18,7 @@ class ArticleRequest extends FormRequest
             'title' => 'required|min:5|max:100',
             'description' => 'required|min:5|max:255',
             'body' => 'required|min:5',
+            'image' => 'required|image|mimes:jpeg,png,svg,jpg',
         ];
     }
 
@@ -28,6 +29,9 @@ class ArticleRequest extends FormRequest
             'min' => 'Минимальное количество симолов :min',
             'max' => 'Максимальное количество символов :max',
             'unique' => 'Такое название уже используется',
+            'image.required' => 'Добавьте изображение',
+            'image' => 'Загрузите изображение',
+            'mimes' => 'Допустимые форматы картинок jpeg, jpg, svg, png',
         ];
     }
 }
