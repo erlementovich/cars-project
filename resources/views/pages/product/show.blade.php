@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.app')
 
 @section('title', $product->name)
 
@@ -7,6 +7,6 @@
 @endpush
 
 
-@section('child-content')
+@section('content')
     @include('products.show')
 @endsection

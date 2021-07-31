@@ -1,7 +1,7 @@
-@extends('layouts.main')
+@extends('layouts.app')
 
 @section('title', 'Каталог')
 
-@section('child-content')
+@section('content')
     @include('products.index')
 @endsection
