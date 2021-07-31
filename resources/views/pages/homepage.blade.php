@@ -4,7 +4,7 @@
 @section('breadcrumbs')
 @endsection
 @section('inner-styles')
-    <link href="/assets/css/main_page_template_styles.css" rel="stylesheet">
+    <link href="{{ mix('assets/css/main.css') }}" rel="stylesheet">
 @endsection
 
 @section('wrapper')

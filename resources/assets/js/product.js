@@ -1,16 +1,15 @@
-<script>
-    $(function () {
-        $('[data-slick-carousel-detail]').each(function () {
-            let $carousel = $(this);
+$(function () {
+    $('[data-slick-carousel-detail]').each(function () {
+        let $carousel = $(this);
 
-            $carousel.find('[data-slick-carousel-detail-items]').slick({
-                dots: true,
-                arrows: false,
-                appendDots: $carousel.find('[data-slick-carousel-detail-pager]'),
-                customPaging: function (slick, index) {
-                    let imageSrc = slick.$slides[index].src;
+        $carousel.find('[data-slick-carousel-detail-items]').slick({
+            dots: true,
+            arrows: false,
+            appendDots: $carousel.find('[data-slick-carousel-detail-pager]'),
+            customPaging: function (slick, index) {
+                let imageSrc = $(slick.$slides[index]).find('img').attr('src');
 
-                    return `
+                return `
                     <div class="relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="active-arrow absolute -top-6 left-2/4 -ml-3 text-orange h-6 w-6"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,8 +18,7 @@
                         <span class="inline-block border rounded cursor-pointer">
                             <img class="h-20 w-40 object-cover" src="${imageSrc}" alt="" title=""></span>
                     </div>`;
-                }
-            })
+            }
         })
     })
-</script>
+})
