@@ -3,7 +3,7 @@
 @section('title', $product->name)
 
 @push('head-scripts')
-    @include('products.script')
+    <script src="{{ mix('assets/js/product.js') }}"></script>
 @endpush
 
 
