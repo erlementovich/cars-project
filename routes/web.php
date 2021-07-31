@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PageController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,3 +41,7 @@ Route::group(['prefix' => 'products'], function () {
 });
 
 
+Auth::routes();
+
+Route::get('/account', [AccountController::class, 'index'])->name('account');
+Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
