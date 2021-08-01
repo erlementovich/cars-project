@@ -33,6 +33,9 @@ class CarController extends Controller
     public function show($id)
     {
         $car = $this->carRepository->find($id);
+        if (!$car)
+            abort(404);
+
         return view('pages.product.show', ['product' => $car]);
     }
 }
