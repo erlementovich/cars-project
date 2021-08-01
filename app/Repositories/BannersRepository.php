@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Contracts\Interfaces\BannersRepositoryContract;
 use App\Models\Banner;

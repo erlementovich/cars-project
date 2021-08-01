@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Events\ArticleUpdatedEvent;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
-use App\Models\Article;
 use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
 
@@ -72,6 +72,8 @@ class ArticleController extends Controller
 
         if ($updated) {
             session()->flash('success', 'Новость успешно обновлена');
+            event(new ArticleUpdatedEvent($article));
+//            Mail::to('artem.erof1@gmail.com')->send(new ArticleUpdatedEvent($article));
         } else {
             session()->flash('error', 'Что-то пошло не так, не получилось обновить новость');
         }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'log'),
 
     /*
     |--------------------------------------------------------------------------
@@ -107,4 +107,7 @@ return [
         ],
     ],
 
+    'to' => [
+        'admin' => env('MAIL_ADMIN_ADDRESS', null),
+    ]
 ];
