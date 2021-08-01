@@ -28,4 +28,15 @@ class UsersRepository implements UsersRepositoryContract
         return $this->user->where('email', $email)->first();
     }
 
+    public function create(array $data)
+    {
+        return $this->user->create($data);
+    }
+
+    public function deleteByEmail(string $email)
+    {
+        return $this->findByEmail($email)->delete();
+    }
+
+
 }

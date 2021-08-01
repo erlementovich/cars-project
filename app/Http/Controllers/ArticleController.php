@@ -18,6 +18,7 @@ class ArticleController extends Controller
     {
         $this->articlesCreateUpdate = $articlesCreateUpdate;
         $this->articleRepository = $articleRepository;
+        $this->middleware('can:update,article')->only(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
     public function index()
