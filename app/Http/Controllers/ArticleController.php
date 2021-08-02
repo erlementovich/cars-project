@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
-use App\Models\Article;
 use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
 

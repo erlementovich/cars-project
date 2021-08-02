@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Repositories;
 
 use App\Contracts\Interfaces\CarsRepositoryContract;
