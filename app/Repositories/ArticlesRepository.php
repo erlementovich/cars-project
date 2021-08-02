@@ -7,6 +7,7 @@ use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Contracts\Interfaces\HasTags;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ArticlesRepository implements ArticlesRepositoryContract
 {
@@ -58,12 +59,37 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function findBySlug(string $slug)
     {
-        return $this->article->where('slug', $slug)->first();
+        return $this->article
+            ->where('slug', $slug)
+            ->first();
     }
 
 
     public function tags()
     {
         return $this->article->tags();
+    }
+
+    public function count()
+    {
+        return $this->article->count();
+    }
+
+    public function articleSortedByBody($direction = 'asc')
+    {
+        return $this->article
+            ->query()
+            ->select(['title', 'id', DB::raw('CHAR_LENGTH(body) as body_length')])
+            ->orderBy('body_length', $direction)
+            ->first();
+    }
+
+    public function mostTagged()
+    {
+        return $this->article
+            ->select(['title', 'id'])
+            ->withCount('tags')
+            ->orderByDesc('tags_count')
+            ->first();
     }
 }
