@@ -23,4 +23,9 @@ class Category extends Model
     {
         return $this->hasMany(Car::class);
     }
+
+    public function scopeBySlug($query, $slug)
+    {
+        return $query->where('slug', $slug)->first();
+    }
 }

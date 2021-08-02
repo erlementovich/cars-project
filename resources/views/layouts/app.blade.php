@@ -17,7 +17,7 @@
     <x-panels.header.wrap :categories="$categories"/>
 
     @section('breadcrumbs')
-        <x-panels.breadcrumbs/>
+        {{ Breadcrumbs::render() }}
     @show
 
     <main class="flex-1 container mx-auto bg-white {{ $contentClass ?? ''}}">
