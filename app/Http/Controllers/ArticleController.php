@@ -51,12 +51,20 @@ class ArticleController extends Controller
     public function show($articleSlug)
     {
         $article = $this->articleRepository->findBySlug($articleSlug);
+        if (!$article) {
+            abort(404);
+        }
+
         return view('pages.article.show', compact('article'));
     }
 
     public function edit($articleSlug)
     {
         $article = $this->articleRepository->findBySlug($articleSlug);
+        if (!$article) {
+            abort(404);
+        }
+
         return view('pages.article.form', compact('article'));
     }
 
