@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
+use App\Models\Article;
 use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
 
@@ -17,6 +18,7 @@ class ArticleController extends Controller
     {
         $this->articlesCreateUpdate = $articlesCreateUpdate;
         $this->articleRepository = $articleRepository;
+        $this->middleware('can:update,' . Article::class)->except(['index', 'show']);
     }
 
     public function index()
