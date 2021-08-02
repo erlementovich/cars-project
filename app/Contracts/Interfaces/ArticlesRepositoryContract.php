@@ -21,4 +21,10 @@ interface ArticlesRepositoryContract
     public function findBySlug(string $slug);
 
     public function tags();
+
+    public function count();
+
+    public function articleSortedByBody($direction = 'acs');
+
+    public function mostTagged();
 }

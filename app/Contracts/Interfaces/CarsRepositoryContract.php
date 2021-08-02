@@ -13,4 +13,6 @@ interface CarsRepositoryContract
     public function week();
 
     public function find(int $id);
+
+    public function count();
 }

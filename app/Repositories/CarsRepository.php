@@ -42,4 +42,9 @@ class CarsRepository implements CarsRepositoryContract
             ->limit(4)
             ->get();
     }
+
+    public function count()
+    {
+        return $this->car->count();
+    }
 }
