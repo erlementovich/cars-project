@@ -6,6 +6,7 @@ use App\Contracts\Interfaces\ArticlesRepositoryContract;
 use App\Events\ArticleUpdatedEvent;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\TagSyncRequest;
+use App\Models\Article;
 use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
 
@@ -18,7 +19,7 @@ class ArticleController extends Controller
     {
         $this->articlesCreateUpdate = $articlesCreateUpdate;
         $this->articleRepository = $articleRepository;
-        $this->middleware('can:update,article')->only(['create', 'store', 'edit', 'update', 'destroy']);
+        $this->middleware('can:update,' . Article::class)->except(['index', 'show']);
     }
 
     public function index()

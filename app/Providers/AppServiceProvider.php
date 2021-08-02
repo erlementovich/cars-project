@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::directive('money', function ($amount) {
             return "<?php echo number_format($amount, 0, '', ' ') . ' ₽'; ?>";
+        });
+
+        Blade::if('admin', function () {
+            return Auth::check() ? Auth::user()->isAdmin() : false;
         });
     }
 }

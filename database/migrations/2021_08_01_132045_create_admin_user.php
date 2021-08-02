@@ -1,23 +1,17 @@
 <?php
 
-use App\Contracts\Interfaces\RolesRepositoryContract;
-use App\Contracts\Interfaces\UsersRepositoryContract;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
 
 class CreateAdminUser extends Migration
 {
-    private $userRepository;
-    private $roleRepository;
     private $email;
     private $role = 'admin';
 
     public function __construct()
     {
-        $this->userRepository = App::make(UsersRepositoryContract::class);
-        $this->roleRepository = App::make(RolesRepositoryContract::class);
         $this->email = config('mail.to.admin') ?? 'admin@example.com';
     }
 
@@ -28,7 +22,7 @@ class CreateAdminUser extends Migration
      */
     public function up()
     {
-        $adminRole = $this->roleRepository->create($this->role);
+        $adminRole = Role::factory()->create(['name' => $this->role]);
 
         $userData = [
             'name' => 'Админ',
@@ -36,7 +30,7 @@ class CreateAdminUser extends Migration
             'email' => $this->email,
         ];
 
-        $userAdmin = $this->userRepository->create($userData);
+        $userAdmin = User::factory()->create($userData);
 
         $userAdmin->roles()->save($adminRole);
     }
@@ -48,7 +42,7 @@ class CreateAdminUser extends Migration
      */
     public function down()
     {
-        $this->userRepository->deleteByEmail($this->email);
-        $this->roleRepository->delete($this->role);
+        User::where('email', $this->email)->first()->delete();
+        Role::where('name', $this->role)->first()->delete();
     }
 }
