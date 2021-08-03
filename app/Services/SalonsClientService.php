@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
@@ -39,9 +41,16 @@ class SalonsClientService
     public function get(string $endpoint = '', $query = null)
     {
         try {
-            return $this->client->get($endpoint, $query);
-        } catch (HttpExceptionInterface $exception) {
-            dd($exception);
+            $response = $this->client->get($endpoint, $query);
+
+            if (!$response->successful()) {
+                $response->throw();
+            }
+
+            return $response->json();
+
+        } catch (HttpClientException $e) {
+            report($e);
         }
     }
 
