@@ -21,7 +21,7 @@ class SalonsRepository implements SalonsRepositoryContract
     public function twoRandom()
     {
         $response = $this->salonClient->get('two_randoms');
-        dd($response->body());
+        return $response->collect();
     }
 
     public function all()
