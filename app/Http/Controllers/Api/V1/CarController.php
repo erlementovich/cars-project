@@ -6,9 +6,12 @@ use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CarRequest;
 use App\Http\Resources\V1\CarResource;
+use App\Traits\ApiResponser;
 
 class CarController extends Controller
 {
+    use ApiResponser;
+
     protected $carRepository;
 
     public function __construct(CarsRepositoryContract $carRepository)
@@ -30,9 +33,9 @@ class CarController extends Controller
         $createdCar = $this->carRepository->create($carData);
 
         if ($createdCar) {
-            return response()->json(['success' => true, 'car_id' => $createdCar->id]);
+            return $this->successResponse(['car_id' => $createdCar->id], 'Запись успешно создана');
         } else {
-            return response()->json(['success' => false, 'errors' => 'Не получилось создать объект']);
+            return $this->errorResponse('Не получилось создать запись');
         }
     }
 
@@ -47,20 +50,20 @@ class CarController extends Controller
         $update = $this->carRepository->update($carData, $id);
 
         if ($update) {
-            return response()->json(['success' => true, 'car_id' => $id]);
+            return $this->successResponse(['car_id' => $id], 'Запись успешно обновлена');
         } else {
-            return response()->json(['success' => false, 'errors' => 'Не получилось обновить запись']);
+            return $this->errorResponse('Не получилось обновить запись');
         }
     }
 
     public function destroy($id)
     {
-        $car = $this->carRepository->delete($id);
+        $carDeleted = $this->carRepository->delete($id);
 
-        if ($car) {
-            return response()->json(['success' => true, 'message' => 'Запись успешно удалена из базы']);
+        if ($carDeleted) {
+            return $this->successResponse([], 'Запись успешно удалена из базы');
         } else {
-            return response()->json(['success' => false, 'message' => 'Не получилось удалить запись']);
+            return $this->errorResponse('Не получилось удалить запись');
         }
     }
 }
