@@ -2,64 +2,65 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Http\Controllers\Controller;
-use App\Models\Car;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\CarRequest;
+use App\Http\Resources\V1\CarResource;
 
 class CarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    protected $carRepository;
+
+    public function __construct(CarsRepositoryContract $carRepository)
+    {
+        $this->carRepository = $carRepository;
+    }
+
     public function index()
     {
-        return response()->json(Car::all()->toArray());
+        $cars = CarResource::collection($this->carRepository->all());
+        $cars->additional = ['success' => true];
+        return $cars;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CarRequest $request)
     {
-        //
+        $carData = $request->only(['name', 'body', 'price', 'old_price', 'car_body_id']);
+
+        $createdCar = $this->carRepository->create($carData);
+
+        if ($createdCar) {
+            return response()->json(['success' => true, 'car_id' => $createdCar->id]);
+        } else {
+            return response()->json(['success' => false, 'errors' => 'Не получилось создать объект']);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        return CarResource::make($this->carRepository->findOrFail($id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(CarRequest $request, $id)
     {
-        //
+        $carData = $request->only(['name', 'body', 'price', 'old_price', 'car_body_id']);
+        $update = $this->carRepository->update($carData, $id);
+
+        if ($update) {
+            return response()->json(['success' => true, 'car_id' => $id]);
+        } else {
+            return response()->json(['success' => false, 'errors' => 'Не получилось обновить запись']);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $car = $this->carRepository->delete($id);
+
+        if ($car) {
+            return response()->json(['success' => true, 'message' => 'Запись успешно удалена из базы']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Не получилось удалить запись']);
+        }
     }
 }
