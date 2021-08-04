@@ -42,6 +42,10 @@ $staticPages = [
     [
         'title' => 'Авторизация',
         'name' => 'login'
+    ],
+    [
+        'title' => 'Салоны',
+        'name' => 'salons'
     ]
 ];
 
