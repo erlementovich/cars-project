@@ -1,11 +1,14 @@
 <?php
 
+use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,3 +46,11 @@ Auth::routes();
 
 Route::get('/account', [AccountController::class, 'index'])->name('account');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
+
+Route::get('/test', function () {
+    $carCount = Cache::remember('car_count_1', 3600, function () {
+        $carsRepository = App::make(CarsRepositoryContract::class);
+        return $carsRepository->count();
+    });
+    return response()->json($carCount);
+});
