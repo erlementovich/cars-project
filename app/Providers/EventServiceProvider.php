@@ -8,6 +8,10 @@ use App\Events\ArticleUpdatedEvent;
 use App\Events\CarCreatedEvent;
 use App\Events\CarDeletedEvent;
 use App\Events\CarUpdatedEvent;
+use App\Events\CategoryCreatedEvent;
+use App\Events\CategoryDeletedEvent;
+use App\Events\CategoryUpdatedEvent;
+use App\Events\ModelCreatedEvent;
 use App\Listeners\CacheArticlesFlush;
 use App\Listeners\CacheCarsFlush;
 use App\Listeners\CacheCategoriesFlush;
@@ -17,7 +21,6 @@ use App\Listeners\SendArticleUpdatedNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -53,7 +56,17 @@ class EventServiceProvider extends ServiceProvider
         CarDeletedEvent::class => [
             CacheCarsFlush::class,
             CacheCategoriesFlush::class
-        ]
+        ],
+        CategoryCreatedEvent::class => [
+            CacheCategoriesFlush::class
+        ],
+        CategoryUpdatedEvent::class => [
+            CacheCategoriesFlush::class
+        ],
+        CategoryDeletedEvent::class => [
+            CacheCategoriesFlush::class
+        ],
+
     ];
 
     /**

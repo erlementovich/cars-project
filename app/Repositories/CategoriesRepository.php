@@ -27,7 +27,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
 
     public function categoriesTree()
     {
-        return Cache::remember('categoriesTree', 3600, function () {
+        return Cache::tags('categories')->remember('categoriesTree', 3600, function () {
             return $this->category
                 ->orderBy('sort')
                 ->withDepth()
@@ -55,10 +55,11 @@ class CategoriesRepository implements CategoriesRepositoryContract
 
     public function findBySlug(string $categorySlug)
     {
-        return Cache::remember("category_$categorySlug", 3600, function () use ($categorySlug) {
-            return $this->category
-                ->where('slug', $categorySlug)
-                ->first();
-        });
+        return Cache::tags('categories')
+            ->remember("category_$categorySlug", 3600, function () use ($categorySlug) {
+                return $this->category
+                    ->where('slug', $categorySlug)
+                    ->first();
+            });
     }
 }

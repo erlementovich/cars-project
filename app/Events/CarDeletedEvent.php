@@ -8,4 +8,6 @@ use Illuminate\Queue\SerializesModels;
 class CarDeletedEvent
 {
     use Dispatchable, SerializesModels;
+
+
 }

@@ -20,5 +20,4 @@ class ArticleCreatedEvent
     {
         $this->article = $article;
     }
-
 }
