@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Client\HttpClientException;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 class SalonsClientService
 {
@@ -17,15 +14,15 @@ class SalonsClientService
 
     /**
      * SalonsClientService constructor.
-     * @param $login
-     * @param $password
-     * @param $apiUrl
+     * @param string $login
+     * @param string $password
+     * @param string $apiUrl
      */
-    public function __construct()
+    public function __construct(string $login, string $password, string $apiUrl)
     {
-        $this->apiUrl = config('studentsapi.domain');
-        $this->login = config('studentsapi.login');
-        $this->password = config('studentsapi.password');
+        $this->login = $login;
+        $this->apiUrl = $apiUrl;
+        $this->password = $password;
         $this->client = $this->setClientParams();
     }
 
