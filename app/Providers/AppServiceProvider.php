@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\SalonsClientService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Kalnoy\Nestedset\Collection;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(SalonsClientService::class, function () {
+            $login = config('studentsapi.login');
+            $password = config('studentsapi.password');
+            $apiUrl = config('studentsapi.domain');
+
+            return new SalonsClientService($login, $password, $apiUrl);
+        });
     }
 
     /**

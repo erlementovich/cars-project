@@ -7,7 +7,6 @@ use App\Events\CarDeletedEvent;
 use App\Events\CarUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Car extends Model
 {
@@ -17,6 +16,15 @@ class Car extends Model
         'created' => CarCreatedEvent::class,
         'updated' => CarUpdatedEvent::class,
         'deleted' => CarDeletedEvent::class,
+    ];
+
+    protected $fillable = [
+      'name',
+      'body',
+      'price',
+      'price',
+      'old_price',
+      'car_body_id'
     ];
 
     public function carEngine()

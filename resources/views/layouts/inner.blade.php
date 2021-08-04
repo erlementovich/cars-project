@@ -5,7 +5,7 @@
         <x-panels.inner-menu/>
         <div class="col-span-4 sm:col-span-3 lg:col-span-4 p-4">
             <h1 class="text-black text-3xl font-bold mb-4">@yield('title')</h1>
-            <div class="space-y-4">
+            <div class="space-y-4 {{ $wrapperClass ?? '' }}">
                 @yield('content')
             </div>
             @yield('after')

@@ -8,6 +8,7 @@ use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Contracts\Interfaces\CategoriesRepositoryContract;
 use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Contracts\Interfaces\RolesRepositoryContract;
+use App\Contracts\Interfaces\SalonsRepositoryContract;
 use App\Contracts\Interfaces\TagsRepositoryContract;
 use App\Contracts\Interfaces\UsersRepositoryContract;
 use App\Repositories\ArticlesRepository;
@@ -16,6 +17,7 @@ use App\Repositories\CarsRepository;
 use App\Repositories\CategoriesRepository;
 use App\Repositories\ImagesRepository;
 use App\Repositories\RolesRepository;
+use App\Repositories\SalonsRepository;
 use App\Repositories\TagsRepository;
 use App\Repositories\UsersRepository;
 use Illuminate\Support\ServiceProvider;
@@ -68,6 +70,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             RolesRepositoryContract::class,
             RolesRepository::class
+        );
+
+        $this->app->bind(
+            SalonsRepositoryContract::class,
+            SalonsRepository::class
         );
     }
 
