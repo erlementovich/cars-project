@@ -81,7 +81,7 @@ class ArticlesRepository implements ArticlesRepositoryContract
     public function count()
     {
         return Cache::tags('articles')
-            ->remember('count', 3600, function () {
+            ->remember('articlesCount', 3600, function () {
                 return $this->article->count();
             });
     }

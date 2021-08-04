@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Interfaces\SalonsRepositoryContract;
 use App\Services\SalonsClientService;
+use Illuminate\Support\Facades\Cache;
 
 class SalonsRepository implements SalonsRepositoryContract
 {
@@ -20,12 +21,16 @@ class SalonsRepository implements SalonsRepositoryContract
 
     public function twoRandom()
     {
-        return $this->salonClient->get('two_randoms');
+        return Cache::remember('twoRandomSalons', 300, function () {
+            return $this->salonClient->get('two_randoms');
+        });
     }
 
     public function all()
     {
-        return $this->salonClient->get();
+        return Cache::remember('allSalons', 3600, function () {
+            return $this->salonClient->get();
+        });
     }
 
 }

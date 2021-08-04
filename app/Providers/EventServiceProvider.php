@@ -10,6 +10,7 @@ use App\Events\CarDeletedEvent;
 use App\Events\CarUpdatedEvent;
 use App\Listeners\CacheArticlesFlush;
 use App\Listeners\CacheCarsFlush;
+use App\Listeners\CacheCategoriesFlush;
 use App\Listeners\SendArticleCreatedNotification;
 use App\Listeners\SendArticleDeletedNotification;
 use App\Listeners\SendArticleUpdatedNotification;
@@ -42,13 +43,16 @@ class EventServiceProvider extends ServiceProvider
             CacheArticlesFlush::class,
         ],
         CarCreatedEvent::class => [
-            CacheCarsFlush::class
+            CacheCarsFlush::class,
+            CacheCategoriesFlush::class
         ],
         CarUpdatedEvent::class => [
-            CacheCarsFlush::class
+            CacheCarsFlush::class,
+            CacheCategoriesFlush::class
         ],
         CarDeletedEvent::class => [
-            CacheCarsFlush::class
+            CacheCarsFlush::class,
+            CacheCategoriesFlush::class
         ]
     ];
 
