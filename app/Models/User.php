@@ -47,10 +47,8 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this
-            ->query()
-            ->whereHas('roles', function ($q) {
-                return $q->where('name', 'admin');
-            })->exists();
+        return $this->whereHas('roles', function ($q) {
+            return $q->where('name', 'admin');
+        })->exists();
     }
 }

@@ -5,6 +5,11 @@ namespace App\Providers;
 use App\Events\ArticleCreatedEvent;
 use App\Events\ArticleDeletedEvent;
 use App\Events\ArticleUpdatedEvent;
+use App\Events\CarCreatedEvent;
+use App\Events\CarDeletedEvent;
+use App\Events\CarUpdatedEvent;
+use App\Listeners\CacheArticlesFlush;
+use App\Listeners\CacheCarsFlush;
 use App\Listeners\SendArticleCreatedNotification;
 use App\Listeners\SendArticleDeletedNotification;
 use App\Listeners\SendArticleUpdatedNotification;
@@ -25,13 +30,25 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ArticleUpdatedEvent::class => [
-            SendArticleUpdatedNotification::class
+            SendArticleUpdatedNotification::class,
+            CacheArticlesFlush::class,
         ],
         ArticleDeletedEvent::class => [
-            SendArticleDeletedNotification::class
+            SendArticleDeletedNotification::class,
+            CacheArticlesFlush::class,
         ],
         ArticleCreatedEvent::class => [
-            SendArticleCreatedNotification::class
+            SendArticleCreatedNotification::class,
+            CacheArticlesFlush::class,
+        ],
+        CarCreatedEvent::class => [
+            CacheCarsFlush::class
+        ],
+        CarUpdatedEvent::class => [
+            CacheCarsFlush::class
+        ],
+        CarDeletedEvent::class => [
+            CacheCarsFlush::class
         ]
     ];
 

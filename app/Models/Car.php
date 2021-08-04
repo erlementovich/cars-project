@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\CarCreatedEvent;
+use App\Events\CarDeletedEvent;
+use App\Events\CarUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -9,6 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Car extends Model
 {
     use HasFactory;
+
+    protected $dispatchesEvents = [
+        'created' => CarCreatedEvent::class,
+        'updated' => CarUpdatedEvent::class,
+        'deleted' => CarDeletedEvent::class,
+    ];
 
     public function carEngine()
     {

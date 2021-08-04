@@ -10,7 +10,7 @@ interface CategoriesRepositoryContract
 {
     public function categoriesTree();
 
-    public function pagination(Category $category, int $count = null);
+    public function pagination($categorySlug, $currentPage, int $count = null);
 
     public function findBySlug(string $categorySlug);
 }

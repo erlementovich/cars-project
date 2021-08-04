@@ -1,9 +1,13 @@
 <?php
 
+use App\Contracts\Interfaces\ArticlesRepositoryContract;
+use App\Contracts\Interfaces\CarsRepositoryContract;
+use App\Contracts\Interfaces\CategoriesRepositoryContract;
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use App\Models\Category;
 use App\Models\Car;
 use App\Models\Article;
+use Illuminate\Support\Facades\App;
 
 /* Главная страница */
 Breadcrumbs::for('main', function ($trail) {
@@ -60,7 +64,8 @@ Breadcrumbs::for('products.index', function ($trail) {
 
 /* Категории */
 Breadcrumbs::for('categories.show', function ($trail, $categorySlug) {
-    $category = Category::bySlug($categorySlug);
+    $categoryRepository = App::make(CategoriesRepositoryContract::class);
+    $category = $categoryRepository->findBySlug($categorySlug);
     $trail->parent('products.index');
 
     foreach ($category->ancestors as $ancestor) {
@@ -72,7 +77,8 @@ Breadcrumbs::for('categories.show', function ($trail, $categorySlug) {
 
 /* Товары */
 Breadcrumbs::for('products.show', function ($trail, $carID) {
-    $car = Car::find($carID);
+    $carRepository = App::make(CarsRepositoryContract::class);
+    $car = $carRepository->find($carID);
     $trail->parent('categories.show', $car->category->slug);
     $trail->push($car->name, route('products.show', $car));
 });
@@ -85,7 +91,8 @@ Breadcrumbs::for('articles.index', function ($trail) {
 
 /* Страница новости */
 Breadcrumbs::for('articles.show', function ($trail, $articleSlug) {
-    $article = Article::bySlug($articleSlug);
+    $articleRepository = App::make(ArticlesRepositoryContract::class);
+    $article = $articleRepository->findBySlug($articleSlug);
     $trail->parent('articles.index');
     $trail->push($article->title, route('articles.show', $article));
 });

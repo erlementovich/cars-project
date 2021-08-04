@@ -47,10 +47,3 @@ Auth::routes();
 Route::get('/account', [AccountController::class, 'index'])->name('account');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 
-Route::get('/test', function () {
-    $carCount = Cache::remember('car_count_1', 3600, function () {
-        $carsRepository = App::make(CarsRepositoryContract::class);
-        return $carsRepository->count();
-    });
-    return response()->json($carCount);
-});
