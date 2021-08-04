@@ -65,7 +65,7 @@ class CarsRepository implements CarsRepositoryContract
     public function count()
     {
         return Cache::tags('cars')
-            ->rememberForever('carsCount', function () {
+            ->remember('carsCount', 3600, function () {
                 return $this->car->count();
             });
     }
