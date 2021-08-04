@@ -47,3 +47,7 @@ Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 
 
 Route::get('/salons', [SalonController::class, 'all'])->name('salons');
+
+Route::get('/cache', function () {
+    return \Illuminate\Support\Facades\Cache::flush();
+});

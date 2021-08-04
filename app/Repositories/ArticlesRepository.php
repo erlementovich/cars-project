@@ -3,9 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
-use App\Contracts\Interfaces\HasTags;
 use App\Models\Article;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 

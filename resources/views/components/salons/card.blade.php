@@ -2,7 +2,7 @@
 
 <div class="w-full flex p-4 @if($evenLoop) flex-row-reverse bg-gray-100 @endif">
     <div class="h-48 lg:h-auto w-32 xl:w-48 flex-none text-center rounded-lg overflow-hidden">
-        <img src="{{ $salon['image'] }}" class="w-full h-full object-cover" alt="{{ $salon['name'] }}">
+        <img src="{{ asset($salon['image']) }}" class="w-full h-full object-cover" alt="{{ $salon['name'] }}">
     </div>
     <div class="px-4 flex flex-col justify-between leading-normal @if($evenLoop) text-right @endif">
         <div class="mb-8">
