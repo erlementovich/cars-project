@@ -21,9 +21,12 @@ class CarsRepository implements CarsRepositoryContract
 
     public function find(int $id)
     {
-        return $this->car
-            ->with(['carBody', 'carClass', 'carEngine'])
-            ->find($id);
+        return $this->car->find($id);
+    }
+
+    public function findOrFail(int $id)
+    {
+        return $this->car->findOrFail($id);
     }
 
 
@@ -32,6 +35,11 @@ class CarsRepository implements CarsRepositoryContract
         return $this->car
             ->with('image')
             ->paginate($count);
+    }
+
+    public function all()
+    {
+        return $this->car->get();
     }
 
     public function week()
@@ -46,5 +54,22 @@ class CarsRepository implements CarsRepositoryContract
     public function count()
     {
         return $this->car->count();
+    }
+
+    public function delete(int $id)
+    {
+        $car = $this->findOrFail($id);
+        return $car->delete();
+    }
+
+    public function update(array $data, int $id)
+    {
+        $car = $this->findOrFail($id);
+        return $car->update($data);
+    }
+
+    public function create(array $data)
+    {
+        return $this->car->create($data);
     }
 }
