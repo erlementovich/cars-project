@@ -41,7 +41,7 @@ class CarController extends Controller
 
     public function show($id)
     {
-        return CarResource::make($this->carRepository->findOrFail($id));
+        return CarResource::make($this->carRepository->find($id));
     }
 
     public function update(CarRequest $request, $id)

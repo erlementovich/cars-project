@@ -28,32 +28,32 @@ class CarsRepository implements CarsRepositoryContract
                     ->query()
                     ->with(['image', 'gallery', 'category'])
                     ->with(['carBody', 'carClass', 'carEngine'])
-                    ->find($id);
+                    ->findOrFail($id);
             });
     }
 
-    public function findOrFail(int $id)
-    {
-        return $this->car->findOrFail($id);
-    }
 
-
-    public function pagination($count = null)
+    public function pagination($currentPage, $count = null)
     {
-        return $this->car
-            ->with('image')
-            ->paginate($count);
+        return Cache::tags('cars')
+            ->remember("cars_page_$currentPage", 3600, function () use ($count) {
+                return $this->car
+                    ->with('image')
+                    ->paginate($count);
+            });
     }
 
     public function all()
     {
-        return $this->car->get();
+        return Cache::tags('cars')->remember('allCars', 3600, function () {
+            return $this->car->get();
+        });
     }
 
     public function week()
     {
         return Cache::tags('cars')
-            ->remember('week', 3600, function () {
+            ->remember('weekCars', 3600, function () {
                 return $this->car
                     ->where('is_new', true)
                     ->with('image')
@@ -65,20 +65,20 @@ class CarsRepository implements CarsRepositoryContract
     public function count()
     {
         return Cache::tags('cars')
-            ->rememberForever('count', function () {
+            ->remember('carsCount', 3600, function () {
                 return $this->car->count();
             });
     }
 
     public function delete(int $id)
     {
-        $car = $this->findOrFail($id);
+        $car = $this->find($id);
         return $car->delete();
     }
 
     public function update(array $data, int $id)
     {
-        $car = $this->findOrFail($id);
+        $car = $this->find($id);
         return $car->update($data);
     }
 

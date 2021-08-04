@@ -83,7 +83,13 @@ Breadcrumbs::for('categories.show', function ($trail, $categorySlug) {
 Breadcrumbs::for('products.show', function ($trail, $carID) {
     $carRepository = App::make(CarsRepositoryContract::class);
     $car = $carRepository->find($carID);
-    $trail->parent('categories.show', $car->category->slug);
+
+    if ($car->category) {
+        $trail->parent('categories.show', $car->category->slug);
+    } else {
+        $trail->parent('products.index');
+    }
+
     $trail->push($car->name, route('products.show', $car));
 });
 
