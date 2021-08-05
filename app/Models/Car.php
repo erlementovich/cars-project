@@ -5,9 +5,6 @@ namespace App\Models;
 use App\Events\CarCreatedEvent;
 use App\Events\CarDeletedEvent;
 use App\Events\CarUpdatedEvent;
-use App\Events\ModelCreatedEvent;
-use App\Events\ModelDeletedEvent;
-use App\Events\ModelUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,9 +13,9 @@ class Car extends Model
     use HasFactory;
 
     protected $dispatchesEvents = [
-        'created' => ModelCreatedEvent::class,
-        'updated' => ModelUpdatedEvent::class,
-        'deleted' => ModelDeletedEvent::class,
+        'created' => CarCreatedEvent::class,
+        'updated' => CarUpdatedEvent::class,
+        'deleted' => CarDeletedEvent::class,
     ];
 
     protected $fillable = [

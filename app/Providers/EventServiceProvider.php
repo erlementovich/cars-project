@@ -11,7 +11,6 @@ use App\Events\CarUpdatedEvent;
 use App\Events\CategoryCreatedEvent;
 use App\Events\CategoryDeletedEvent;
 use App\Events\CategoryUpdatedEvent;
-use App\Events\ModelCreatedEvent;
 use App\Listeners\CacheArticlesFlush;
 use App\Listeners\CacheCarsFlush;
 use App\Listeners\CacheCategoriesFlush;
