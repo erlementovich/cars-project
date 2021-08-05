@@ -20,10 +20,13 @@ class ArticlesCreateUpdate
 
     public function update(array $articleData, $tagsCollection, Article $article, $file)
     {
-        $image = $this->imageUploader->saveFile($file);
-        $articleData['image_id'] = $image->id;
+        if ($file) {
+            $image = $this->imageUploader->saveFile($file);
+            $articleData['image_id'] = $image->id;
+        }
 
-        $updated = $this->articleRepository->update($article, $articleData);
+        $updated = $article->update($articleData);
+
         if ($updated)
             $this->tagsSynchronizer->sync($tagsCollection, $article);
 
@@ -32,8 +35,10 @@ class ArticlesCreateUpdate
 
     public function store(array $articleData, $tagsCollection, $file)
     {
-        $image = $this->imageUploader->saveFile($file);
-        $articleData['image_id'] = $image->id;
+        if ($file) {
+            $image = $this->imageUploader->saveFile($file);
+            $articleData['image_id'] = $image->id;
+        }
 
         $article = $this->articleRepository->create($articleData);
         if ($article)

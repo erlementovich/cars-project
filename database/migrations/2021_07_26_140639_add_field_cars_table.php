@@ -14,7 +14,7 @@ class AddFieldCarsTable extends Migration
     public function up()
     {
         Schema::table('cars', function (Blueprint $table) {
-            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('image_id')->nullable();
             $table->foreign('image_id')->references('id')->on('images');
         });
     }

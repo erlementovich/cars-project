@@ -11,6 +11,21 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.sass('resources/assets/scss/main.scss', 'public/css')
+mix
+    .options({
+        processCssUrls: false
+    })
+    .sass('resources/assets/scss/app.scss', 'public/assets/css')
     .sourceMaps()
-    .js('resources/assets/js/main.js', 'public/js')
+    .sass('resources/assets/scss/main.scss', 'public/assets/css')
+    .sourceMaps()
+    .sass('resources/assets/scss/inner.scss', 'public/assets/css')
+    .sourceMaps()
+    .js('resources/assets/js/main.js', 'public/assets/js')
+    .sourceMaps()
+    .js('resources/assets/js/product.js', 'public/assets/js')
+    .sourceMaps()
+    .copyDirectory('resources/assets/fonts', 'public/assets/fonts')
+    .copyDirectory('resources/assets/images', 'public/assets/images')
+    .copyDirectory('resources/assets/pictures', 'public/assets/pictures')
+    .copyDirectory('resources/assets/favicon.ico', 'public/assets')

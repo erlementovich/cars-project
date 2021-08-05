@@ -6,8 +6,9 @@
     @stack('head-styles')
     <x-panels.scripts/>
     @stack('head-scripts')
+
     @section('inner-styles')
-        <link href="/assets/css/inner_page_template_styles.css" rel="stylesheet">
+        <link href="{{ mix('assets/css/inner.css') }}" rel="stylesheet">
     @show
     <title>{{ config('app.name') }} - @yield('title')</title>
 </head>
@@ -16,7 +17,7 @@
     <x-panels.header.wrap :categories="$categories"/>
 
     @section('breadcrumbs')
-        <x-panels.breadcrumbs/>
+        {{ Breadcrumbs::render() }}
     @show
 
     <main class="flex-1 container mx-auto bg-white {{ $contentClass ?? ''}}">

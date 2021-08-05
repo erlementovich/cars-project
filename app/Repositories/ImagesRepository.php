@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Contracts\Interfaces\ImagesRepositoryContract;
 use App\Models\Image;
@@ -22,7 +20,7 @@ class ImagesRepository implements ImagesRepositoryContract
 
     public function create(array $data)
     {
-        return $this->image->query()->create($data);
+        return $this->image->create($data);
     }
 
 }

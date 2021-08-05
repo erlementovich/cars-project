@@ -18,8 +18,8 @@ class CreateCarImageTable extends Migration
             $table->unsignedBigInteger('image_id');
 
             $table->primary(['car_id', 'image_id']);
-            $table->foreign('car_id')->references('id')->on('cars');
-            $table->foreign('image_id')->references('id')->on('images');
+            $table->foreign('car_id')->references('id')->on('cars')->cascadeOnDelete();
+            $table->foreign('image_id')->references('id')->on('images')->cascadeOnDelete();
         });
     }
 

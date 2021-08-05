@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Models\Car;
+use Illuminate\Support\Facades\Request;
 
 class CarController extends Controller
 {
@@ -21,7 +22,8 @@ class CarController extends Controller
 
     public function index()
     {
-        $products = $this->carRepository->pagination(16);
+        $page = Request::input('page') ?? 1;
+        $products = $this->carRepository->pagination($page, 16);
         return view('pages.product.index', compact('products'));
     }
 
@@ -30,8 +32,13 @@ class CarController extends Controller
      *
      * @param \App\Models\Car $car
      */
-    public function show(Car $car)
+    public function show($id)
     {
+        $car = $this->carRepository->find($id);
+        if (!$car) {
+            abort(404);
+        }
+
         return view('pages.product.show', ['product' => $car]);
     }
 }

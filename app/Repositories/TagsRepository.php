@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Repositories;
 
 use App\Contracts\Interfaces\TagsRepositoryContract;
@@ -21,6 +20,22 @@ class TagsRepository implements TagsRepositoryContract
 
     public function firstOrCreate(array $data)
     {
-        return $this->tag->query()->firstOrCreate($data);
+        return $this->tag->firstOrCreate($data);
+    }
+
+    public function maxArticlesCountTag()
+    {
+        return $this->tag
+            ->withCount('articles')
+            ->orderByDesc('articles_count')
+            ->first();
+    }
+
+    public function avgArticlesCount()
+    {
+        return $this->tag
+            ->withCount('articles')
+            ->having('articles_count', '>', 0)
+            ->avg('articles_count');
     }
 }

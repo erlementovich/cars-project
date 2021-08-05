@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Interfaces\CategoriesRepositoryContract;
-use App\Models\Category;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class CategoryController extends Controller
 {
@@ -19,9 +18,10 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function show(Category $category)
+    public function show($categorySlug)
     {
-        $products = $this->categoryRepository->pagination($category, 16);
+        $page = Request::input('page') ?? 1;
+        $products = $this->categoryRepository->pagination($categorySlug, $page, 16);
 
         return view('pages.product.index', compact('products'));
     }
