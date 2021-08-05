@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Interfaces\CarsRepositoryContract;
 use App\Models\Car;
 use App\Models\CarEngine;
+use Illuminate\Support\Facades\Cache;
 
 class CarsRepository implements CarsRepositoryContract
 {
@@ -21,50 +22,63 @@ class CarsRepository implements CarsRepositoryContract
 
     public function find(int $id)
     {
-        return $this->car->find($id);
+        return Cache::tags('cars')
+            ->remember("car_$id", 3600, function () use ($id) {
+                return $this->car
+                    ->query()
+                    ->with(['image', 'gallery', 'category'])
+                    ->with(['carBody', 'carClass', 'carEngine'])
+                    ->findOrFail($id);
+            });
     }
 
-    public function findOrFail(int $id)
-    {
-        return $this->car->findOrFail($id);
-    }
 
-
-    public function pagination($count = null)
+    public function pagination($currentPage, $count = null)
     {
-        return $this->car
-            ->with('image')
-            ->paginate($count);
+        return Cache::tags('cars')
+            ->remember("cars_page_$currentPage", 3600, function () use ($count) {
+                return $this->car
+                    ->with('image')
+                    ->paginate($count);
+            });
     }
 
     public function all()
     {
-        return $this->car->get();
+        return Cache::tags('cars')->remember('allCars', 3600, function () {
+            return $this->car->get();
+        });
     }
 
     public function week()
     {
-        return $this->car
-            ->where('is_new', true)
-            ->with('image')
-            ->limit(4)
-            ->get();
+        return Cache::tags('cars')
+            ->remember('weekCars', 3600, function () {
+                return $this->car
+                    ->where('is_new', true)
+                    ->with('image')
+                    ->limit(4)
+                    ->get();
+            });
     }
 
     public function count()
     {
-        return $this->car->count();
+        return Cache::tags('cars')
+            ->remember('carsCount', 3600, function () {
+                return $this->car->count();
+            });
     }
 
     public function delete(int $id)
     {
-        $car = $this->findOrFail($id);
+        $car = $this->find($id);
         return $car->delete();
     }
 
     public function update(array $data, int $id)
     {
-        $car = $this->findOrFail($id);
+        $car = $this->find($id);
         return $car->update($data);
     }
 

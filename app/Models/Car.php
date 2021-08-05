@@ -2,21 +2,32 @@
 
 namespace App\Models;
 
+use App\Events\CarCreatedEvent;
+use App\Events\CarDeletedEvent;
+use App\Events\CarUpdatedEvent;
+use App\Events\ModelCreatedEvent;
+use App\Events\ModelDeletedEvent;
+use App\Events\ModelUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Car extends Model
 {
     use HasFactory;
 
+    protected $dispatchesEvents = [
+        'created' => ModelCreatedEvent::class,
+        'updated' => ModelUpdatedEvent::class,
+        'deleted' => ModelDeletedEvent::class,
+    ];
+
     protected $fillable = [
-      'name',
-      'body',
-      'price',
-      'price',
-      'old_price',
-      'car_body_id'
+        'name',
+        'body',
+        'price',
+        'price',
+        'old_price',
+        'car_body_id'
     ];
 
     public function carEngine()

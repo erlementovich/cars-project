@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Interfaces\BannersRepositoryContract;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Cache;
 
 class BannersRepository implements BannersRepositoryContract
 {
@@ -21,16 +22,17 @@ class BannersRepository implements BannersRepositoryContract
 
     public function create(array $data)
     {
-        return $this->banner
-            ->create($data);
+        return $this->banner->create($data);
     }
 
     public function mainBanners()
     {
-        return $this->banner
-            ->inRandomOrder()
-            ->limit(3)
-            ->with('image')
-            ->get();
+        return Cache::remember('banners', 3600, function () {
+            return $this->banner
+                ->inRandomOrder()
+                ->limit(3)
+                ->with('image')
+                ->get();
+        });
     }
 }

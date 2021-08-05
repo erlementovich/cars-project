@@ -1,11 +1,13 @@
 @props(['article'])
 <div class="w-full flex">
-    <div class="h-48 lg:h-auto w-32 sm:w-60 lg:w-32 xl:w-48 flex-none text-center overflow-hidden">
-        <a class="block w-full h-full hover:opacity-75" href="{{ route('articles.show', $article) }}"><img
-                src="{{ $article->image->getUrl() }}"
-                alt="{{ $article->image->alt }}"
-                class="bg-white bg-opacity-25 w-full h-full object-contain"></a>
-    </div>
+    @isset($article->image)
+        <div class="h-48 lg:h-auto w-32 sm:w-60 lg:w-32 xl:w-48 flex-none text-center overflow-hidden">
+            <a class="block w-full h-full hover:opacity-75" href="{{ route('articles.show', $article) }}"><img
+                    src="{{ $article->image->getUrl() }}"
+                    alt="{{ $article->image->alt }}"
+                    class="bg-white bg-opacity-25 w-full h-full object-contain"></a>
+        </div>
+    @endisset
     <div class="px-4 flex flex-col justify-between leading-normal">
         <div class="mb-8">
             <div class="text-white font-bold text-xl mb-2">

@@ -8,7 +8,7 @@ use App\Models\Article;
 
 interface ArticlesRepositoryContract
 {
-    public function pagination(int $count = null);
+    public function pagination($currentPage, int $count = null);
 
     public function latest();
 

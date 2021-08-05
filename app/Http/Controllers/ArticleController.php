@@ -8,6 +8,7 @@ use App\Http\Requests\TagSyncRequest;
 use App\Models\Article;
 use App\Services\ArticlesCreateUpdate;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Request;
 
 class ArticleController extends Controller
 {
@@ -23,7 +24,8 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = $this->articleRepository->pagination(5);
+        $page = Request::input('page') ?? 1;
+        $articles = $this->articleRepository->pagination($page, 5);
         return view('pages.article.index', compact('articles'));
     }
 

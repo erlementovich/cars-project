@@ -35,8 +35,10 @@ class ArticlesCreateUpdate
 
     public function store(array $articleData, $tagsCollection, $file)
     {
-        $image = $this->imageUploader->saveFile($file);
-        $articleData['image_id'] = $image->id;
+        if ($file) {
+            $image = $this->imageUploader->saveFile($file);
+            $articleData['image_id'] = $image->id;
+        }
 
         $article = $this->articleRepository->create($articleData);
         if ($article)

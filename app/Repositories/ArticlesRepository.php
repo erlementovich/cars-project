@@ -3,9 +3,8 @@
 namespace App\Repositories;
 
 use App\Contracts\Interfaces\ArticlesRepositoryContract;
-use App\Contracts\Interfaces\HasTags;
 use App\Models\Article;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class ArticlesRepository implements ArticlesRepositoryContract
@@ -22,23 +21,29 @@ class ArticlesRepository implements ArticlesRepositoryContract
         $this->article = $article;
     }
 
-    public function pagination(int $count = null)
+    public function pagination($currentPage, int $count = null)
     {
-        return $this->article
-            ->whereNotNull('published_at')
-            ->orderByDesc('published_at')
-            ->with(['tags', 'image'])
-            ->paginate($count);
+        return Cache::tags('articles')
+            ->remember("pagination_page_$currentPage", 3600, function () use ($count) {
+                return $this->article
+                    ->whereNotNull('published_at')
+                    ->orderByDesc('published_at')
+                    ->with(['tags', 'image'])
+                    ->paginate($count);
+            });
     }
 
     public function latest()
     {
-        return $this->article
-            ->whereNotNull('published_at')
-            ->latest('published_at')
-            ->with(['tags', 'image'])
-            ->limit(3)
-            ->get();
+        return Cache::tags('articles')
+            ->remember('latest', 3600, function () {
+                return $this->article
+                    ->whereNotNull('published_at')
+                    ->latest('published_at')
+                    ->with(['tags', 'image'])
+                    ->limit(3)
+                    ->get();
+            });
     }
 
     public function create(array $data)
@@ -58,9 +63,13 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function findBySlug(string $slug)
     {
-        return $this->article
-            ->where('slug', $slug)
-            ->first();
+        return Cache::tags('articles')
+            ->remember("article_$slug", 3600, function () use ($slug) {
+                return $this->article
+                    ->where('slug', $slug)
+                    ->with(['tags', 'image'])
+                    ->first();
+            });
     }
 
 
@@ -71,7 +80,10 @@ class ArticlesRepository implements ArticlesRepositoryContract
 
     public function count()
     {
-        return $this->article->count();
+        return Cache::tags('articles')
+            ->remember('articlesCount', 3600, function () {
+                return $this->article->count();
+            });
     }
 
     public function articleSortedByBody($direction = 'asc')
